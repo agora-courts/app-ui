@@ -41,11 +41,7 @@ const Court = () => {
         pt={[10]}
       >
         <Flex gap={4} align="center" justify="center" wrap="wrap">
-          <Image
-            borderRadius="full"
-            boxSize="10%"
-            src={court.config?.logo}
-          />
+          <Image borderRadius="full" boxSize="10%" src={court.config?.logo} />
           <Text fontSize="2xl" fontWeight="bold">
             {court.name}
           </Text>
@@ -72,22 +68,21 @@ const Court = () => {
                 <Text fontSize="md">Params</Text>
               </HStack>
             </Link>
-            <Link href={`https://explorer.solana.com/address/${court.config?.projectAddress}`} isExternal>
+            <Link
+              href={`https://explorer.solana.com/address/${court.config?.projectAddress}`}
+              isExternal
+            >
               <Box w="6">
                 <ArrowTopRightOnSquareIcon />
               </Box>
             </Link>
           </Flex>
         </Flex>
-        <Image
-          src={court.config?.banner}
-          w="100%"
-          py="10"
-        />
-        <Tabs court={court}/>
+        <Image src={court.config?.banner} w="100%" py="10" />
+        <Tabs court={court} />
       </Box>
 
-      <LevelCard config={court.config}/>
+      <LevelCard config={court.config} />
     </Flex>
   );
 };

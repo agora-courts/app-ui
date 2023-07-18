@@ -7,7 +7,7 @@ import WizardModal from "@components/WizardModal";
 
 const Home = () => {
   const [courts, setCourts] = useState([])  
-  const [query, setQuery] = useState([]);
+  const [query, setQuery] = useState();
 
   useEffect(() => {
     let active = true
@@ -21,8 +21,8 @@ const Home = () => {
     }
   }, [])
 
-  const filter = () => {
-    if (!query || !courts) return courts;
+  const filter = (courts) => {
+    if (!query) return courts;
 
     return courts.filter((court) => court.name.toLowerCase().startsWith(query));
   };
