@@ -28,11 +28,6 @@
         },
         {
           "name": "court",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "courtAuthority",
           "isMut": false,
           "isSigner": false
         },
@@ -42,13 +37,13 @@
           "isSigner": true
         },
         {
-          "name": "userPayAta",
+          "name": "userRepAta",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
         },
         {
-          "name": "userRepAta",
+          "name": "userPayAta",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -81,6 +76,10 @@
         }
       ],
       "args": [
+        {
+          "name": "courtName",
+          "type": "string"
+        },
         {
           "name": "disputeId",
           "type": "u64"
@@ -117,11 +116,6 @@
           "isSigner": false
         },
         {
-          "name": "courtAuthority",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "user",
           "isMut": true,
           "isSigner": true
@@ -166,6 +160,10 @@
         }
       ],
       "args": [
+        {
+          "name": "courtName",
+          "type": "string"
+        },
         {
           "name": "disputeId",
           "type": "u64"
@@ -222,11 +220,6 @@
           "isSigner": false
         },
         {
-          "name": "courtAuthority",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -238,6 +231,10 @@
         }
       ],
       "args": [
+        {
+          "name": "courtName",
+          "type": "string"
+        },
         {
           "name": "disputeId",
           "type": "u64"
@@ -257,14 +254,25 @@
           "isSigner": false
         },
         {
-          "name": "payer",
+          "name": "authority",
           "isMut": true,
           "isSigner": true
         },
         {
           "name": "protocol",
-          "isMut": true,
-          "isSigner": true
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "repMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payMint",
+          "isMut": false,
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "systemProgram",
@@ -274,14 +282,54 @@
       ],
       "args": [
         {
-          "name": "reputationMint",
-          "type": "publicKey"
+          "name": "courtName",
+          "type": "string"
         },
         {
-          "name": "paymentMint",
-          "type": {
-            "option": "publicKey"
-          }
+          "name": "maxDisputeVotes",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "editCourt",
+      "accounts": [
+        {
+          "name": "court",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "transferAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "transferProtocol",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "repMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payMint",
+          "isMut": false,
+          "isSigner": false,
+          "isOptional": true
+        }
+      ],
+      "args": [
+        {
+          "name": "courtName",
+          "type": "string"
         },
         {
           "name": "maxDisputeVotes",
@@ -324,13 +372,13 @@
           "isSigner": true
         },
         {
-          "name": "protocolPayAta",
+          "name": "protocolRepAta",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
         },
         {
-          "name": "protocolRepAta",
+          "name": "protocolPayAta",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -364,6 +412,10 @@
       ],
       "args": [
         {
+          "name": "courtName",
+          "type": "string"
+        },
+        {
           "name": "users",
           "type": {
             "vec": {
@@ -382,16 +434,6 @@
     {
       "name": "selectVote",
       "accounts": [
-        {
-          "name": "case",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "candidate",
-          "isMut": false,
-          "isSigner": false
-        },
         {
           "name": "voterRecord",
           "isMut": true,
@@ -414,11 +456,6 @@
         },
         {
           "name": "repMint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "courtAuthority",
           "isMut": false,
           "isSigner": false
         },
@@ -450,8 +487,70 @@
       ],
       "args": [
         {
+          "name": "courtName",
+          "type": "string"
+        },
+        {
           "name": "disputeId",
           "type": "u64"
+        },
+        {
+          "name": "commitment",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "revealVote",
+      "accounts": [
+        {
+          "name": "case",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "candidate",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "voterRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "dispute",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "court",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "courtName",
+          "type": "string"
+        },
+        {
+          "name": "disputeId",
+          "type": "u64"
+        },
+        {
+          "name": "salt",
+          "type": "string"
         }
       ]
     },
@@ -469,11 +568,6 @@
           "isSigner": false
         },
         {
-          "name": "courtAuthority",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -484,7 +578,12 @@
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "courtName",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -513,6 +612,14 @@
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "editAuthority",
+            "type": "publicKey"
+          },
+          {
+            "name": "protocol",
+            "type": "publicKey"
+          },
           {
             "name": "repMint",
             "type": "publicKey"
@@ -632,7 +739,11 @@
             "type": "i64"
           },
           {
-            "name": "endsAt",
+            "name": "votingEndsAt",
+            "type": "i64"
+          },
+          {
+            "name": "disputeEndsAt",
             "type": "i64"
           },
           {
@@ -697,7 +808,9 @@
           },
           {
             "name": "userVotedFor",
-            "type": "publicKey"
+            "type": {
+              "defined": "Vote"
+            }
           }
         ]
       }
@@ -717,6 +830,9 @@
             "name": "Voting"
           },
           {
+            "name": "Reveal"
+          },
+          {
             "name": "Concluded",
             "fields": [
               {
@@ -724,6 +840,37 @@
                 "type": {
                   "option": "publicKey"
                 }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vote",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Secret",
+            "fields": [
+              {
+                "name": "hash",
+                "type": {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "Reveal",
+            "fields": [
+              {
+                "name": "key",
+                "type": "publicKey"
               }
             ]
           }
@@ -851,9 +998,34 @@
       "code": 6023,
       "name": "UserNotAuthorized",
       "msg": "Signer is not authorized by the protocol to interact."
+    },
+    {
+      "code": 6024,
+      "name": "InvalidProtocol",
+      "msg": "Protocol does not own this court."
+    },
+    {
+      "code": 6025,
+      "name": "InvalidEditAuthority",
+      "msg": "User does not own this court."
+    },
+    {
+      "code": 6026,
+      "name": "NotRevealPeriod",
+      "msg": "Dispute not in reveal period."
+    },
+    {
+      "code": 6027,
+      "name": "InvalidReveal",
+      "msg": "Hash was incorrect or user did not vote in this dispute."
+    },
+    {
+      "code": 6028,
+      "name": "MaxDisputeTooHigh",
+      "msg": "Max Dispute Votes Must be <= 200."
     }
   ],
   "metadata": {
-    "address": "Benri2piS4b4h5S54uaMRybuhhZtbM4L3zofhd3Y9FXv"
+    "address": "ABkQZCq2qh32X75A5FjaT8FGRWEqujPiBV3wJZEmzuEX"
   }
 }
