@@ -26,11 +26,14 @@ function Dashboard() {
     async function load() {
       try {
         let user = await getUser();
-        user.tokenBalances = await Promise.all(
-          user.tokenBalances.map(async (token) => {
-            return { ...(await getAsset(token.mint)), amount: token.amount };
-          })
+        if (user.tokenBalances.length == 0) return;
+
+        let token_metadata = await getAsset(
+          user.tokenBalances.map((token) => token.mint)
         );
+        user.tokenBalances.forEach((token, idx, arr) => {
+          arr[idx] = { ...token_metadata[idx], amount: token.amount };
+        });
       } catch (e) {
         console.log(e);
         if (e.response.data === "Not Authorized") {

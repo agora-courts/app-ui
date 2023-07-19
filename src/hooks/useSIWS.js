@@ -8,7 +8,7 @@ const useSIWS = () => {
   const wallet = useWallet();
 
   useEffect(() => {
-    if (!wallet.signMessage) return;
+    if (!wallet.connected || !wallet.signMessage) return;
 
     (async function () {
       try {

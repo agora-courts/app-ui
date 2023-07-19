@@ -1,7 +1,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 
-const findProgramAddress = (label, extraSeeds = null) => {
+const findProgramAddress = (label, programId, extraSeeds = null) => {
     let seeds = [Buffer.from(anchor.utils.bytes.utf8.encode(label))];
     if (extraSeeds) {
         for (let extraSeed of extraSeeds) {
@@ -16,7 +16,7 @@ const findProgramAddress = (label, extraSeeds = null) => {
             }
         }
     }
-    let [publicKey, bump] = PublicKey.findProgramAddressSync(seeds, this.program.programId);
+    let [publicKey, bump] = PublicKey.findProgramAddressSync(seeds, programId);
     return { publicKey, bump };
 };
 

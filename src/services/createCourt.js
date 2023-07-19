@@ -1,30 +1,30 @@
 import axios from "axios";
 import { ENDPOINTS } from "@data/constants.js";
 import getAsset from "./getAsset";
-import useProgram from "../hooks/useProgram";
 import findProgramAddress from "../utils/findProgramAddress";
 import { SystemProgram } from "@solana/web3.js";
 
-const createCourt = async (court) => {
+const createCourt = async (court, program) => {
   let { name, ...config } = court;
-  let program = useProgram();
 
   try {
-    config.reputationToken = await getAsset(config.reputationToken);
-    config.paymentToken = await getAsset(config.paymentToken);
+    let token_metadata = await getAsset([
+      config.reputationToken,
+      config.paymentToken,
+    ]);
+
+    config.reputationToken = token_metadata[0];
+    config.paymentToken = token_metadata[1];
 
     await program.methods
-      .initializeCourt(
-        name,
-        config.maxVotes
-      )
+      .initializeCourt(name, config.maxVotes)
       .accounts({
-        court: findProgramAddress("court", name).publicKey,
+        court: findProgramAddress("court", program.programId, name).publicKey,
         authority: program.provider.publicKey,
-        protocol: config.protocol,
+        protocol: config.projectAddress,
         repMint: config.reputationToken.mintAddress,
         payMint: config.paymentToken.mintAddress,
-        systemProgram: SystemProgram.programId
+        systemProgram: SystemProgram.programId,
       })
       .rpc();
 

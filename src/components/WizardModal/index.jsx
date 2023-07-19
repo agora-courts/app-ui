@@ -17,12 +17,14 @@ import createCourt from "@services/createCourt";
 import updateCourt from "@services/updateCourt";
 import { toast } from "react-toastify";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import useProgram from "@hooks/useProgram";
 
 function Wizard({ btnText, name, isDisabled }) {
   const [page, setPage] = useState(0);
   const [info, setInfo] = useState({});
   const [levels, setLevels] = useState([-1]);
   const wallet = useAnchorWallet();
+  const program = useProgram();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -59,11 +61,14 @@ function Wizard({ btnText, name, isDisabled }) {
       try {
         if (name) await updateCourt(name, { ...info, levels: sliced });
         else
-          await createCourt({
-            ...info,
-            levels: sliced,
-            editAuthority: wallet.publicKey.toString(),
-          });
+          await createCourt(
+            {
+              ...info,
+              levels: sliced,
+              editAuthority: wallet.publicKey.toString(),
+            },
+            program
+          );
         toast.success("Court created!");
       } catch (error) {
         console.log(error);

@@ -9,14 +9,15 @@ const createRecord = async (courtName) => {
     let court = findProgramAddress("court", courtName).publicKey;
 
     await program.methods
-      .initializeRecord(
-        courtName
-      )
+      .initializeRecord(courtName)
       .accounts({
-        record: findProgramAddress("record", [court, program.provider.publicKey]).publicKey,
+        record: findProgramAddress("record", [
+          court,
+          program.provider.publicKey,
+        ]).publicKey,
         court: court,
         payer: program.provider.publicKey,
-        systemProgram: SystemProgram.programId
+        systemProgram: SystemProgram.programId,
       })
       .rpc();
   } catch (err) {

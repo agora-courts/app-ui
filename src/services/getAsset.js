@@ -1,19 +1,19 @@
 import axios from "axios";
 import { ENDPOINTS } from "@data/constants.js";
 
-const getAsset = async (mintAddress) => {
+const getAsset = async (mintAccounts) => {
   try {
     const { data } = await axios.post(`${ENDPOINTS.TOKENS}/metadata`, {
-      id: mintAddress,
+      mintAccounts,
     });
 
-    let content = data.result.content;
-    return {
-      mintAddress,
-      ticker: content.metadata.symbol,
-      logo: content.files[0]?.uri,
-    };
+    return data.map((token) => ({
+      mintAddress: token.account,
+      ticker: token.onChainMetadata.metadata?.data?.symbol || "N/A",
+      logo: token.offChainMetadata.metadata?.image || "",
+    }));
   } catch (e) {
+    console.log(e);
     throw new Error("Invalid token mint address");
   }
 };

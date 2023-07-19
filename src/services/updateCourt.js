@@ -6,8 +6,12 @@ const updateCourt = async (name, config) => {
   for (let k in config) config[k] == "" && delete config[k];
 
   try {
-    config.reputationToken = await getAsset(config.reputationToken);
-    config.paymentToken = await getAsset(config.paymentToken);
+    let token_metadata = await getAsset([
+      config.reputationToken,
+      config.paymentToken,
+    ]);
+    config.reputationToken = token_metadata[0];
+    config.paymentToken = token_metadata[1];
 
     await axios.patch(`${ENDPOINTS.COURTS}/${name}`, config);
   } catch (err) {
