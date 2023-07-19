@@ -34,10 +34,23 @@ function NotifPopover() {
             </Text>
             <Text fontSize="sm" mb={3}>
               Get notified when urgent actions are required and when your
-              disputes are updated. By wallet, email, Telegram, or text
-              message.
+              disputes are updated. By wallet, email, Telegram, or text message.
             </Text>
-            <Button colorScheme='blackAlpha' size="sm" isDisabled>Use Dialect</Button>
+            <Button colorScheme="blackAlpha" size="sm" isDisabled>
+              Use Dialect
+            </Button>
+          </Box>
+          <Box bg="gray.200" p={5} mt={3}>
+            <Text fontWeight="semibold" fontSize="lg">
+              notifi
+            </Text>
+            <Text fontSize="sm" mb={3}>
+              Get notified for actions and dispute updates. By email, Telegram,
+              or phone number.
+            </Text>
+            <Button colorScheme="blackAlpha" size="sm" isDisabled>
+              Use Notifi
+            </Button>
           </Box>
         </PopoverBody>
       </PopoverContent>
