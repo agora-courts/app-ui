@@ -7,6 +7,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
+// TODO: accept an array of disputes to claim
 const claimDisputes = async (config, program) => {
   // config -> courtName, disputeID: anchor.BN, repMint: PublicKey, candidateAcc: PublicKey
   const courtName = config.courtName;

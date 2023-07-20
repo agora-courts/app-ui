@@ -12,7 +12,6 @@ import {
 
 const castVote = async (config, program) => {
   // save salt to DB? -> needs to be correlated with this specific vote
-  console.log(config)
   const courtName = config.courtName;
   const disputeID = config.disputeID;
   const repMint = config.repMint;

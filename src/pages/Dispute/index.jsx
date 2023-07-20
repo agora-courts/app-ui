@@ -21,11 +21,18 @@ import { useState, useEffect } from "react";
 import getTimeUntilDate from "@utils/getTimeUntilDate";
 import getCourt from "@services/getCourt";
 import getStatusColor from "@utils/getStatusColor";
+import useProgram from "@hooks/useProgram";
+import { PublicKey } from "@solana/web3.js";
+import { BN } from "@coral-xyz/anchor";
+import { toast } from "react-toastify";
+import joinDispute from "@services/joinDispute";
 
 const Dispute = () => {
   let { state } = useLocation();
   let { name, disputeId } = useParams();
   const [dispute, setDispute] = useState();
+  const program = useProgram();
+
   let color = getStatusColor(dispute?.status);
 
   useEffect(() => {
@@ -50,6 +57,7 @@ const Dispute = () => {
         repToken: court.config.reputationToken.ticker,
         repMint: court.config.reputationToken.mintAddress,
         payToken: court.config.paymentToken.ticker,
+        payMint: court.config.paymentToken.mintAddress,
       });
     }
   }, []);
@@ -58,20 +66,52 @@ const Dispute = () => {
     switch (dispute?.status) {
       case "Inactive":
       case "Awaiting Evidence":
-        return <EvidenceCard cases={dispute?.cases} />;
+        return (
+          <EvidenceCard
+            courtName={name}
+            disputeID={new BN(disputeId)}
+            cases={dispute?.cases}
+          />
+        );
       case "Voting":
         return (
           <VotingCard
             courtName={name}
-            disputeID={disputeId}
+            disputeID={new BN(disputeId)}
             repMint={dispute?.repMint}
             cases={dispute?.cases}
             deadline={getTimeUntilDate(dispute?.timestamps, dispute?.status)}
           />
         );
       case "Finalizing Votes":
-        return <RevealCard voters={dispute?.voters} />;
+        return (
+          <RevealCard
+            courtName={name}
+            disputeID={new BN(disputeId)}
+            voters={dispute?.voters}
+          />
+        );
     }
+  };
+
+  const handleClick = () => {
+    (async function () {
+      try {
+        await joinDispute(
+          {
+            courtName: name,
+            disputeID: new BN(disputeId),
+            repMint: new PublicKey(dispute?.repMint),
+            payMint: new PublicKey(dispute?.payMint),
+          },
+          program
+        );
+        toast.success("Dispute joined!");
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+      }
+    })();
   };
 
   return (
@@ -86,7 +126,11 @@ const Dispute = () => {
         <Flex align="center">
           <Heading>{dispute?.title}</Heading>
           <Spacer />
-          <Button mr={5}>Join Dispute</Button>
+          {dispute?.status === "Inactive" && (
+            <Button mr={5} onClick={handleClick} isDisabled={!program}>
+              Join Dispute
+            </Button>
+          )}
           <Circle borderWidth={1} py={0.5} px={2} borderColor={color}>
             <Text color={color}>{dispute?.status}</Text>
           </Circle>

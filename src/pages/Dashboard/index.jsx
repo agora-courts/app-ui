@@ -51,6 +51,7 @@ function Dashboard() {
   const handleSubmit = () => {
     (async function () {
       try {
+        
         await claimDisputes({}, program)
         toast.success("Balances claimed!");
       } catch (error) {

@@ -21,6 +21,10 @@ const Tabs = ({ court }) => {
           repToken={court.config?.reputationToken?.ticker}
           repMint={court.config?.reputationToken?.mintAddress}
           payToken={court.config?.paymentToken?.ticker}
+          testConfig={{
+            courtName: court.name,
+            payMint: court.config?.paymentToken?.mintAddress,
+          }}
         />
         <AboutTab config={court.config} />
       </TabPanels>

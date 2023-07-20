@@ -2,12 +2,17 @@ import findProgramAddress from "../utils/findProgramAddress";
 
 const revealVote = async (config, program) => {
   // config -> courtName, disputeID: anchor.BN, candidateAcc: PublicKey, salt: string
+  console.log(config);
   const courtName = config.courtName;
   const disputeID = config.disputeID;
   const candidateAcc = config.candidateAcc;
   const salt = config.salt;
 
-  const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+  const courtPDA = findProgramAddress(
+    "court",
+    program.programId,
+    courtName
+  ).publicKey;
   const recordPDA = findProgramAddress("record", program.programId, [
     courtPDA,
     program.provider.publicKey,

@@ -1,9 +1,14 @@
 import { Text, Box, Button } from "@chakra-ui/react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { toast } from "react-toastify";
+import useProgram from "@hooks/useProgram";
+import revealVote from "@services/revealVote";
+import getUser from "@services/getUser";
 
-export function RevealCard({ voters }) {
+export function RevealCard({ courtName, disputeID, voters }) {
   const wallet = useAnchorWallet();
+  const program = useProgram();
+
   const isVoter = voters.some(
     (voter) => voter === wallet?.publicKey.toString()
   );
@@ -11,7 +16,10 @@ export function RevealCard({ voters }) {
   const handleSubmit = () => {
     (async function () {
       try {
-        // reveal logic
+        let user = await getUser();
+        let vote = "TODO: get bcrypt vote";
+
+        await revealVote({ courtName, disputeID, vote }, program);
         toast.success("Vote finalized!");
       } catch (error) {
         console.log(error);

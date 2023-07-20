@@ -9,11 +9,22 @@ import {
 import DisputeCard from "./DisputeCard";
 import { Input } from "@components/ui/Input";
 import { useState } from "react";
+import createDispute from "@services/createDispute";
+import useProgram from "@hooks/useProgram";
+import { PublicKey } from "@solana/web3.js";
+import { toast } from "react-toastify";
 
-export function DisputeTab({ disputes, repToken, payToken, repMint }) {
+export function DisputeTab({
+  disputes,
+  repToken,
+  payToken,
+  repMint,
+  testConfig,
+}) {
   const [query, setQuery] = useState();
   const [filterBy, setFilter] = useState();
   const [sort, setSort] = useState();
+  const program = useProgram();
 
   const filter = (disputes) => {
     let res = disputes;
@@ -40,6 +51,25 @@ export function DisputeTab({ disputes, repToken, payToken, repMint }) {
   };
   let filteredDisputes = filter(disputes) || [];
 
+  const handleClick = () => {
+    (async function () {
+      try {
+        await createDispute(
+          {
+            courtName: testConfig.courtName,
+            repMint: new PublicKey(repMint),
+            payMint: new PublicKey(testConfig.payMint),
+          },
+          program
+        );
+        toast.success("Test dispute created!");
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+      }
+    })();
+  };
+
   return (
     <TabPanel>
       <HStack>
@@ -65,12 +95,20 @@ export function DisputeTab({ disputes, repToken, payToken, repMint }) {
         </Select>
       </HStack>
       <Text my={4}>{filteredDisputes?.length} Disputes</Text>
-      <Button mb={4}>Create Test Dispute</Button>
+      <Button mb={4} onClick={handleClick} isDisabled={!program}>
+        Create Test Dispute
+      </Button>
       <VStack>
         {filteredDisputes.map((dispute, idx) => (
           <DisputeCard
             key={idx}
-            dispute={{ ...dispute, repToken, payToken, repMint }}
+            dispute={{
+              ...dispute,
+              repToken,
+              payToken,
+              repMint,
+              payMint: testConfig.payMint,
+            }}
             idx={idx}
           ></DisputeCard>
         ))}

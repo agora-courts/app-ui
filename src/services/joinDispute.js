@@ -15,7 +15,11 @@ const joinDispute = async (config, program) => {
   const repMint = config.repMint;
   const payMint = config.payMint;
 
-  const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+  const courtPDA = findProgramAddress(
+    "court",
+    program.programId,
+    courtName
+  ).publicKey;
   const recordPDA = findProgramAddress("record", program.programId, [
     courtPDA,
     program.provider.publicKey,

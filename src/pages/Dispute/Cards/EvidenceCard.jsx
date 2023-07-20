@@ -13,11 +13,15 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useRef } from "react";
+import createCase from "@services/createCase";
+import useProgram from "@hooks/useProgram";
 
-export function EvidenceCard({ cases }) {
+export function EvidenceCard({ courtName, disputeID, cases }) {
   const wallet = useAnchorWallet();
+  const program = useProgram();
+
   const isParty = cases.some(
-    (c) => c.partyAddress === wallet?.publicKey.toString()
+    (c) => "Open" || c.partyAddress === wallet?.publicKey.toString()
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const evidence = useRef(null);
@@ -26,7 +30,15 @@ export function EvidenceCard({ cases }) {
     (async function () {
       try {
         if (!evidence.current.value) return;
-        // evidence submit logic
+
+        await createCase(
+          {
+            courtName,
+            disputeID,
+            evidence: evidence.current.value,
+          },
+          program
+        );
         toast.success("Evidence submitted!");
       } catch (error) {
         console.log(error);

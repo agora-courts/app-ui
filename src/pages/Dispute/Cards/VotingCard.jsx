@@ -3,7 +3,6 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import castVote from "@services/castVote";
 import useProgram from "@hooks/useProgram";
-import { BN } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 
 export function VotingCard({ courtName, disputeID, repMint, deadline, cases }) {
@@ -16,7 +15,7 @@ export function VotingCard({ courtName, disputeID, repMint, deadline, cases }) {
         await castVote(
           {
             courtName,
-            disputeID: new BN(disputeID),
+            disputeID,
             repMint: new PublicKey(repMint),
             candidateAcc: new PublicKey(candidateAcc),
           },
