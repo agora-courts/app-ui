@@ -1,4 +1,11 @@
-import { TabPanel, Select, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  TabPanel,
+  Select,
+  HStack,
+  Text,
+  VStack,
+  Button,
+} from "@chakra-ui/react";
 import DisputeCard from "./DisputeCard";
 import { Input } from "@components/ui/Input";
 import { useState } from "react";
@@ -58,6 +65,7 @@ export function DisputeTab({ disputes, repToken, payToken }) {
         </Select>
       </HStack>
       <Text my={4}>{filteredDisputes?.length} Disputes</Text>
+      <Button mb={4}>Create Test Dispute</Button>
       <VStack>
         {filteredDisputes.map((dispute, idx) => (
           <DisputeCard

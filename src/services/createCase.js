@@ -1,9 +1,7 @@
-import axios from "axios";
-import { ENDPOINTS } from "@data/constants.js";
 import findProgramAddress from "../utils/findProgramAddress";
 import { SystemProgram } from "@solana/web3.js";
 
-const initCase = async (config, program) => {
+const createCase = async (config, program) => {
     // config -> courtName, disputeID: anchor.BN, evidence: string
     const courtName = config.courtName;
     const disputeID = config.disputeID;
@@ -37,4 +35,4 @@ const initCase = async (config, program) => {
     }
 };
 
-export default initCase;
+export default createCase;

@@ -10,6 +10,7 @@ import {
   AccordionButton,
   Accordion,
   AccordionPanel,
+  Button,
 } from "@chakra-ui/react";
 import { VotingCard } from "./Cards/VotingCard";
 import { DetailsCard } from "./Cards/DetailsCard";
@@ -48,10 +49,9 @@ const Dispute = () => {
         repToken: court.config.reputationToken.ticker,
         payToken: court.config.paymentToken.ticker,
       });
-      console.log(dispute)
+      console.log(dispute);
     }
   }, []);
-
 
   const CardDisplay = () => {
     switch (dispute?.status) {
@@ -82,6 +82,7 @@ const Dispute = () => {
         <Flex align="center">
           <Heading>{dispute?.title}</Heading>
           <Spacer />
+          <Button mr={5}>Join Dispute</Button>
           <Circle borderWidth={1} py={0.5} px={2} borderColor={color}>
             <Text color={color}>{dispute?.status}</Text>
           </Circle>
