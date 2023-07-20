@@ -11,9 +11,8 @@ import {
 } from "@solana/spl-token";
 
 const castVote = async (config, program) => {
-  // config -> courtName, disputeID: anchor.BN, repMint: PublicKey, candidateAcc: PublicKey
   // save salt to DB? -> needs to be correlated with this specific vote
-
+  console.log(config)
   const courtName = config.courtName;
   const disputeID = config.disputeID;
   const repMint = config.repMint;

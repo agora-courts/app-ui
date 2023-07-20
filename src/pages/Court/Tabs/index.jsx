@@ -19,6 +19,7 @@ const Tabs = ({ court }) => {
         <DisputeTab
           disputes={court.disputes}
           repToken={court.config?.reputationToken?.ticker}
+          repMint={court.config?.reputationToken?.mintAddress}
           payToken={court.config?.paymentToken?.ticker}
         />
         <AboutTab config={court.config} />

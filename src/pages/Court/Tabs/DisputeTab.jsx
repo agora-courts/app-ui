@@ -10,7 +10,7 @@ import DisputeCard from "./DisputeCard";
 import { Input } from "@components/ui/Input";
 import { useState } from "react";
 
-export function DisputeTab({ disputes, repToken, payToken }) {
+export function DisputeTab({ disputes, repToken, payToken, repMint }) {
   const [query, setQuery] = useState();
   const [filterBy, setFilter] = useState();
   const [sort, setSort] = useState();
@@ -70,7 +70,7 @@ export function DisputeTab({ disputes, repToken, payToken }) {
         {filteredDisputes.map((dispute, idx) => (
           <DisputeCard
             key={idx}
-            dispute={{ ...dispute, repToken, payToken }}
+            dispute={{ ...dispute, repToken, payToken, repMint }}
             idx={idx}
           ></DisputeCard>
         ))}

@@ -2,20 +2,21 @@ import { useState, useEffect } from "react";
 import TokenCard from "./TokenCard";
 import DisputeCard from "./DisputeCard";
 import { Flex, Spacer, Heading, Button, Text } from "@chakra-ui/react";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import useProgram from "@hooks/useProgram";
 import getUser from "@services/getUser";
 import getAsset from "@services/getAsset";
 import { DEFAULT_IMG } from "@data/constants.js";
 import { toast } from "react-toastify";
 import getTimeUntilDate from "@utils/getTimeUntilDate";
+import claimDisputes from "@services/claimDisputes";
 
 function Dashboard() {
   const [user, setUser] = useState({});
   const [unauthorized, setUnauthorized] = useState(false);
-  const wallet = useAnchorWallet();
+  const program = useProgram();
 
   useEffect(() => {
-    if (!wallet) return;
+    if (!program) return;
 
     let active = true;
     load();
@@ -45,12 +46,12 @@ function Dashboard() {
       }
       setUser(user);
     }
-  }, [wallet]);
+  }, [program]);
 
   const handleSubmit = () => {
     (async function () {
       try {
-        // claim logic
+        await claimDisputes({}, program)
         toast.success("Balances claimed!");
       } catch (error) {
         console.log(error);

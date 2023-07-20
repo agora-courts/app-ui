@@ -41,15 +41,16 @@ const Dispute = () => {
 
     async function load() {
       const court = await getCourt(name);
+
       if (!active || court.disputes.length <= disputeId) {
         return;
       }
       setDispute({
         ...court.disputes[disputeId],
         repToken: court.config.reputationToken.ticker,
+        repMint: court.config.reputationToken.mintAddress,
         payToken: court.config.paymentToken.ticker,
       });
-      console.log(dispute);
     }
   }, []);
 
@@ -61,6 +62,9 @@ const Dispute = () => {
       case "Voting":
         return (
           <VotingCard
+            courtName={name}
+            disputeID={disputeId}
+            repMint={dispute?.repMint}
             cases={dispute?.cases}
             deadline={getTimeUntilDate(dispute?.timestamps, dispute?.status)}
           />

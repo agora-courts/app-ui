@@ -1,12 +1,27 @@
 import { Text, Box, Center, Flex, Spacer, Button } from "@chakra-ui/react";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import castVote from "@services/castVote";
+import useProgram from "@hooks/useProgram";
+import { BN } from "@coral-xyz/anchor";
+import { PublicKey } from "@solana/web3.js";
 
-export function VotingCard({ deadline, cases }) {
+export function VotingCard({ courtName, disputeID, repMint, deadline, cases }) {
+  const program = useProgram();
+
   const handleSubmit = (partyIdx) => {
     (async function () {
       try {
-        // vote logic
+        let candidateAcc = cases[partyIdx].partyAddress;
+        await castVote(
+          {
+            courtName,
+            disputeID: new BN(disputeID),
+            repMint: new PublicKey(repMint),
+            candidateAcc: new PublicKey(candidateAcc),
+          },
+          program
+        );
         toast.success("Vote submitted!");
       } catch (error) {
         console.log(error);
@@ -32,7 +47,14 @@ export function VotingCard({ deadline, cases }) {
       </Flex>
       {cases &&
         cases.map((c, idx) => (
-          <Button key={idx} onClick={() => handleSubmit(idx)} variant="outline" w="full" my={2}>
+          <Button
+            key={idx}
+            onClick={() => handleSubmit(idx)}
+            variant="outline"
+            w="full"
+            my={2}
+            isDisabled={!program}
+          >
             Party {idx + 1}
           </Button>
         ))}
