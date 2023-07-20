@@ -7,16 +7,16 @@ const revealVote = async (config, program) => {
   const candidateAcc = config.candidateAcc;
   const salt = config.salt;
 
-  const courtPDA = findProgramAddress("court", courtName).publicKey;
-  const recordPDA = findProgramAddress("record", [
+  const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+  const recordPDA = findProgramAddress("record", program.programId, [
     courtPDA,
     program.provider.publicKey,
   ]).publicKey;
-  const disputePDA = findProgramAddress("dispute", [
+  const disputePDA = findProgramAddress("dispute", program.programId, [
     courtPDA,
     disputeID,
   ]).publicKey;
-  const casePDA = findProgramAddress("case", [
+  const casePDA = findProgramAddress("case", program.programId, [
     disputePDA,
     candidateAcc,
   ]).publicKey;

@@ -19,12 +19,12 @@ const castVote = async (config, program) => {
   const repMint = config.repMint;
   const candidateAcc = config.candidateAcc;
 
-  const courtPDA = findProgramAddress("court", courtName).publicKey;
-  const recordPDA = findProgramAddress("record", [
+  const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+  const recordPDA = findProgramAddress("record", program.programId, [
     courtPDA,
     program.provider.publicKey,
   ]).publicKey;
-  const disputePDA = findProgramAddress("dispute", [
+  const disputePDA = findProgramAddress("dispute", program.programId, [
     courtPDA,
     disputeID,
   ]).publicKey;

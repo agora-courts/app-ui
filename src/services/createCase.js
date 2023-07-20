@@ -7,10 +7,10 @@ const createCase = async (config, program) => {
     const disputeID = config.disputeID;
     const evidence = config.evidence;
 
-    const courtPDA = findProgramAddress("court", courtName).publicKey;
-    const recordPDA = findProgramAddress("record", [courtPDA, program.provider.publicKey]).publicKey;
-    const disputePDA = findProgramAddress("dispute", [courtPDA, disputeID]).publicKey;
-    const casePDA = findProgramAddress("case", [disputePDA, program.provider.publicKey]);
+    const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+    const recordPDA = findProgramAddress("record", program.programId, [courtPDA, program.provider.publicKey]).publicKey;
+    const disputePDA = findProgramAddress("dispute", program.pgoramId, [courtPDA, disputeID]).publicKey;
+    const casePDA = findProgramAddress("case", program.programId, [disputePDA, program.provider.publicKey]);
 
     try {
         await program.methods
