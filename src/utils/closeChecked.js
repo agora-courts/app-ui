@@ -1,9 +1,8 @@
+//@ts-check
 import findProgramAddress from "./findProgramAddress";
 import { SystemProgram, Transaction } from "@solana/web3.js";
 
-const closeDisputeChecked = async (courtName, disputeID, program) => {
-  let tx = new Transaction();
-
+const closeDisputeChecked = async (tx, courtName, disputeID, program) => {
   const courtPDA = findProgramAddress("court", courtName);
   const disputePDA = findProgramAddress("dispute", [courtPDA, disputeID]).publicKey;
 
