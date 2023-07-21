@@ -17,7 +17,12 @@ export function RevealCard({ courtName, disputeID, voters }) {
     (async function () {
       try {
         let user = await getUser();
-        let vote = "TODO: get bcrypt vote";
+        let juryDispute = user.juryDisputes.find(
+          (ele) => ele.court.name === courtName
+        );
+        let vote = juryDispute.disputes.find(
+          (ele) => ele.id === disputeID
+        ).hashedVote;
 
         await revealVote({ courtName, disputeID, vote }, program);
         toast.success("Vote finalized!");

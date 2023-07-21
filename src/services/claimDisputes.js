@@ -8,7 +8,6 @@ import {
 } from "@solana/spl-token";
 
 const claimDisputes = async (config, program) => {
-  // config -> courtName, disputeID: anchor.BN, repMint: PublicKey, candidateAcc: PublicKey
   const courtName = config.courtName;
 
   const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
