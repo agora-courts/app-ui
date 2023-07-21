@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import useProgram from "@hooks/useProgram";
 
-function Wizard({ btnText, name, isDisabled }) {
+function Wizard({ btnText, name, isDisabled, loadCourt }) {
   const [page, setPage] = useState(0);
   const [info, setInfo] = useState({});
   const [levels, setLevels] = useState([-1]);
@@ -60,7 +60,7 @@ function Wizard({ btnText, name, isDisabled }) {
     (async function () {
       try {
         if (name) await updateCourt(name, { ...info, levels: sliced });
-        else
+        else {
           await createCourt(
             {
               ...info,
@@ -69,6 +69,8 @@ function Wizard({ btnText, name, isDisabled }) {
             },
             program
           );
+          loadCourt();
+        }
         toast.success("Court created!");
       } catch (error) {
         console.log(error);

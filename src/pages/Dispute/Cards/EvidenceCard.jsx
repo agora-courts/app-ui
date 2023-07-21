@@ -16,7 +16,7 @@ import { useRef } from "react";
 import createCase from "@services/createCase";
 import useProgram from "@hooks/useProgram";
 
-export function EvidenceCard({ courtName, disputeID, cases }) {
+export function EvidenceCard({ courtName, disputeID, cases, loadDispute }) {
   const wallet = useAnchorWallet();
   const program = useProgram();
 
@@ -39,6 +39,7 @@ export function EvidenceCard({ courtName, disputeID, cases }) {
           },
           program
         );
+        loadDispute();
         toast.success("Evidence submitted!");
       } catch (error) {
         console.log(error);

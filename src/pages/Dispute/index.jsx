@@ -35,18 +35,10 @@ const Dispute = () => {
 
   let color = getStatusColor(dispute?.status);
 
-  useEffect(() => {
-    if (state) {
-      setDispute(state);
-      return;
-    }
+  function loadDispute() {
     let active = true;
-    load();
-    return () => {
-      active = false;
-    };
 
-    async function load() {
+    (async function () {
       const court = await getCourt(name);
 
       if (!active || court.disputes.length <= disputeId) {
@@ -59,7 +51,20 @@ const Dispute = () => {
         payToken: court.config.paymentToken.ticker,
         payMint: court.config.paymentToken.mintAddress,
       });
+    })();
+
+    return () => {
+      active = false;
+    };
+  }
+
+  useEffect(() => {
+    if (state) {
+      setDispute(state);
+      return;
     }
+
+    loadDispute();
   }, []);
 
   const CardDisplay = () => {
@@ -71,6 +76,7 @@ const Dispute = () => {
             courtName={name}
             disputeID={new BN(disputeId)}
             cases={dispute?.cases}
+            loadDispute={loadDispute}
           />
         );
       case "Voting":
@@ -81,6 +87,7 @@ const Dispute = () => {
             repMint={dispute?.repMint}
             cases={dispute?.cases}
             deadline={getTimeUntilDate(dispute?.timestamps, dispute?.status)}
+            loadDispute={loadDispute}
           />
         );
       case "Finalizing Votes":
@@ -106,6 +113,7 @@ const Dispute = () => {
           },
           program
         );
+        loadDispute();
         toast.success("Dispute joined!");
       } catch (error) {
         console.log(error);

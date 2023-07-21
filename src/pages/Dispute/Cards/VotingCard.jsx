@@ -5,7 +5,14 @@ import castVote from "@services/castVote";
 import useProgram from "@hooks/useProgram";
 import { PublicKey } from "@solana/web3.js";
 
-export function VotingCard({ courtName, disputeID, repMint, deadline, cases }) {
+export function VotingCard({
+  courtName,
+  disputeID,
+  repMint,
+  deadline,
+  cases,
+  loadDispute,
+}) {
   const program = useProgram();
 
   const handleSubmit = (partyIdx) => {
@@ -21,6 +28,7 @@ export function VotingCard({ courtName, disputeID, repMint, deadline, cases }) {
           },
           program
         );
+        loadDispute();
         toast.success("Vote submitted!");
       } catch (error) {
         console.log(error);

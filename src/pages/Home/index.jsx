@@ -6,20 +6,28 @@ import getCourts from "@services/getCourts";
 import WizardModal from "@components/WizardModal";
 
 const Home = () => {
-  const [courts, setCourts] = useState([])  
+  const [courts, setCourts] = useState([]);
   const [query, setQuery] = useState();
 
+  async function loadCourt() {
+    let active = true;
+
+    (async function () {
+      const res = await getCourts();
+      if (!active) {
+        return;
+      }
+      setCourts(res);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }
+
   useEffect(() => {
-    let active = true
-    load()
-    return () => { active = false }
-  
-    async function load() {
-      const res = await getCourts()
-      if (!active) { return }
-      setCourts(res)
-    }
-  }, [])
+    loadCourt();
+  }, []);
 
   const filter = (courts) => {
     if (!query) return courts;
@@ -42,7 +50,7 @@ const Home = () => {
             width={52}
             placeholder="Search for courts..."
           />
-          <WizardModal btnText="Create Court"/>
+          <WizardModal btnText="Create Court" loadCourt={loadCourt} />
         </Flex>
       </Flex>
 

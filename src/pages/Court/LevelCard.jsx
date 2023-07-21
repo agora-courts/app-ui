@@ -58,12 +58,12 @@ export function LevelCard({ config }) {
     if (!config || !wallet) return;
 
     let active = true;
-    load();
+    loadTokenBalance();
     return () => {
       active = false;
     };
 
-    async function load() {
+    async function loadTokenBalance() {
       const balance = await getTokenBalance(
         config?.reputationToken?.mintAddress,
         wallet.publicKey

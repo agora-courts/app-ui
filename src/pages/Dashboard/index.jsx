@@ -15,16 +15,10 @@ function Dashboard() {
   const [unauthorized, setUnauthorized] = useState(false);
   const program = useProgram();
 
-  useEffect(() => {
-    if (!program) return;
-
+  const loadUser = async () => {
     let active = true;
-    load();
-    return () => {
-      active = false;
-    };
 
-    async function load() {
+    (async function () {
       try {
         let user = await getUser();
         if (user.tokenBalances.length == 0) return;
@@ -45,7 +39,17 @@ function Dashboard() {
         return;
       }
       setUser(user);
-    }
+    })();
+
+    return () => {
+      active = false;
+    };
+  };
+
+  useEffect(() => {
+    if (!program) return;
+
+    loadUser();
   }, [program]);
 
   const handleSubmit = () => {
@@ -54,6 +58,7 @@ function Dashboard() {
         for (let ele of user.partyDisputes) {
           await claimDisputes({ courtName: ele.court.name }, program);
         }
+        loadUser();
         toast.success("Balances claimed!");
       } catch (error) {
         console.log(error);
