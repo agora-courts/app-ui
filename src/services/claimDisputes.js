@@ -10,10 +10,13 @@ import {
 const claimDisputes = async (config, program) => {
   // config -> courtName, disputeID: anchor.BN, repMint: PublicKey, candidateAcc: PublicKey
   const courtName = config.courtName;
-  const repMint = config.repMint;
-  const payMint = config.payMint;
 
   const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+
+  let courtState = program.account.court.fetch(courtPDA);
+  const repMint = courtState.repMint;
+  const payMint = courtState.payMint;
+
   const recordPDA = findProgramAddress("record", program.programId, [
     courtPDA,
     program.provider.publicKey,

@@ -1,6 +1,8 @@
 import getATA from "../utils/getATA";
 import * as anchor from "@coral-xyz/anchor";
 import findProgramAddress from "../utils/findProgramAddress";
+import { SystemProgram } from "@solana/web3.js";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 const createDispute = async (config, program) => {
   // config -> courtName, repMint: PublicKey, payMint: PublicKey
@@ -41,8 +43,26 @@ const createDispute = async (config, program) => {
 
   try {
     await program.methods
-      .initializeDispute(courtName, [null, null], disputeConfig)
-      .acccounts({})
+      .initializeDispute(
+        courtName, 
+        [null, null], 
+        disputeConfig
+      )
+      .accounts({
+        dispute: disputePDA,
+        repVault: repVaultATA,
+        payVault: payVaultATA, //NULL
+        court: courtPDA,
+        payer: program.provider.publicKey,
+        protocol: program.provider.publicKey,
+        protocolRepAta: program.programId, //NULL
+        protocolPayAta: program.programId, //NULL
+        repMint: repMint,
+        payMint: payMint,
+        systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID
+      })
       .rpc();
   } catch (err) {
     throw err;
