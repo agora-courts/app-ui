@@ -51,8 +51,9 @@ function Dashboard() {
   const handleSubmit = () => {
     (async function () {
       try {
-        
-        await claimDisputes({}, program)
+        for (let ele of user.partyDisputes) {
+          await claimDisputes({ courtName: ele.court.name }, program);
+        }
         toast.success("Balances claimed!");
       } catch (error) {
         console.log(error);
