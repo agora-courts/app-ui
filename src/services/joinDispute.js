@@ -46,7 +46,7 @@ const joinDispute = async (config, program) => {
     tx.add(
       await program.methods
         .interact(courtName, disputeID)
-        .acccounts({
+        .accounts({
           dispute: disputePDA,
           repVault: repVaultATA,
           payVault: payVaultATA,

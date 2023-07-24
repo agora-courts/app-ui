@@ -4,9 +4,9 @@ import { SystemProgram, Transaction } from "@solana/web3.js";
 const createRecordChecked = async (courtName, program) => {
   let tx = new Transaction();
 
-  let courtPDA = findProgramAddress("court", courtName);
+  let courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
 
-  let recordPDA = findProgramAddress("record", [courtPDA, program.provider.publicKey]).publicKey;
+  let recordPDA = findProgramAddress("record", program.programId, [courtPDA, program.provider.publicKey]).publicKey;
 
   let recordAcc = await program.provider.connection.getAccountInfo(recordPDA);
 

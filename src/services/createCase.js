@@ -23,7 +23,7 @@ const createCase = async (config, program) => {
   const casePDA = findProgramAddress("case", program.programId, [
     disputePDA,
     program.provider.publicKey,
-  ]);
+  ]).publicKey;
 
   try {
     await program.methods
