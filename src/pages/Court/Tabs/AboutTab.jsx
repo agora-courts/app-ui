@@ -6,19 +6,19 @@ export function AboutTab({ config }) {
       <Text fontSize="small" mt={3}>
         Reputation Token
       </Text>
-      <Text>{config?.reputationToken?.ticker}</Text>
+      <Text>{config.reputationToken?.ticker}</Text>
       <Text fontSize="small" mt={3}>
         Payment Token
       </Text>
-      <Text>{config?.paymentToken?.ticker}</Text>
+      <Text>{config.paymentToken?.ticker}</Text>
       <Text fontSize="small" mt={3}>
         Website
       </Text>
-      <Text>{config?.website}</Text>
+      <Text>{config.website}</Text>
       <Text fontSize="small" mt={3}>
         Twitter
       </Text>
-      <Text>{config?.twitter}</Text>
+      <Text>{config.twitter}</Text>
     </TabPanel>
   );
 }

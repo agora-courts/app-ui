@@ -9,7 +9,7 @@ const useProgram = () => {
   const { connection } = useConnection();
   const wallet = useAnchorWallet();
 
-  if (!wallet) return undefined;
+  if (!wallet) return undefined; // wallet disconnected if useProgram == undefined
 
   const provider = new AnchorProvider(connection, wallet, {
     preflightCommitment: COMMITMENT,

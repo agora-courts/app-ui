@@ -35,6 +35,7 @@ function Dashboard() {
           setUnauthorized(true);
         }
       }
+
       if (!active) {
         return;
       }
@@ -93,10 +94,15 @@ function Dashboard() {
             res.push(
               <DisputeCard
                 title={dispute.title}
-                court={ele.court.name}
-                status={dispute.status}
-                timestamp={getTimeUntilDate(dispute.timestamps, dispute.status)}
-                role="Party"
+                details={{
+                  courtName: ele.court.name,
+                  status: dispute.status,
+                  timestamp: getTimeUntilDate(
+                    dispute.timestamps,
+                    dispute.status
+                  ),
+                  role: "Party",
+                }}
                 link={`/courts/${ele.court.name}/dispute/${idx}`}
               />
             );
@@ -110,10 +116,15 @@ function Dashboard() {
             res.push(
               <DisputeCard
                 title={dispute.title}
-                court={ele.court.name}
-                status={dispute.status}
-                timestamp={getTimeUntilDate(dispute.timestamps, dispute.status)}
-                role="Party"
+                details={{
+                  courtName: ele.court.name,
+                  status: dispute.status,
+                  timestamp: getTimeUntilDate(
+                    dispute.timestamps,
+                    dispute.status
+                  ),
+                  role: "Jury",
+                }}
                 link={`/courts/${ele.court.name}/dispute/${idx}`}
               />
             );

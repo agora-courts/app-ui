@@ -12,8 +12,10 @@ const useSIWS = () => {
 
     (async function () {
       try {
+        // try to login if session exists
         await login("", "");
       } catch (e) {
+        // initiate sign in otherwise
         const message = new SigninMessage({
           domain: window.location.host,
           publicKey: wallet.publicKey?.toBase58(),

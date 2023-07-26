@@ -11,9 +11,11 @@ import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import relativeTime from "@utils/relativeTime";
 import getStatusColor from "@utils/getStatusColor";
+import getDisputeStatus from "@utils/getDisputeStatus";
 
 const DisputeCard = ({ dispute, idx }) => {
-  let color = getStatusColor((dispute.status));
+  let status = getDisputeStatus(dispute.timestamps, dispute.status)
+  let color = getStatusColor(status);
 
   return (
     <LinkBox
@@ -35,7 +37,7 @@ const DisputeCard = ({ dispute, idx }) => {
           <Badge ml={2}>Level {dispute.levelRequired}</Badge>
         </LinkOverlay>
         <Spacer />
-        <Text color={color}>{dispute.status}</Text>
+        <Text color={color}>{status}</Text>
         <Box w="5" ml={3}>
           <ChevronRightIcon />
         </Box>

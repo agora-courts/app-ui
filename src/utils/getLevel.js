@@ -1,6 +1,4 @@
 const getLevel = (numTokens, levels) => {
-  if (!numTokens || !levels) return 0;
-
   let nearestIndex = -1;
   let nearestDifference = Infinity;
 
@@ -13,6 +11,7 @@ const getLevel = (numTokens, levels) => {
       nearestIndex = i;
     }
   }
+  
   return nearestIndex;
 };
 

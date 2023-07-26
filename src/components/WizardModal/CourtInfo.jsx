@@ -10,27 +10,28 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-function CourtInfo({ name, setInfo, setPage }) {
+function CourtInfo({ name, setFormData, setPage }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const isCourtExisting = !!name;
 
   const onSubmit = (values) => {
-    setInfo((info) => {
-      return { ...info, ...values };
+    setFormData((data) => {
+      return { ...data, ...values };
     });
     setPage((currPage) => currPage + 1);
   };
 
   return (
     <>
-      Let's get started. Fill in the information below, keep in mind your court name
-      cannot be changed!
+      Let's get started. Fill in the information below, keep in mind your court
+      name cannot be changed!
       <form onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} gap={5} mt={5}>
-          {!name && (
+          {!isCourtExisting && (
             <FormControl isInvalid={errors.name}>
               <FormLabel>Name</FormLabel>
               <Input
@@ -58,7 +59,9 @@ function CourtInfo({ name, setInfo, setPage }) {
                 },
               })}
             />
-            <FormErrorMessage>{errors.projectAddress?.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.projectAddress?.message}
+            </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={errors.reputationToken}>
             <FormLabel>Reputation Token Mint</FormLabel>
@@ -104,7 +107,7 @@ function CourtInfo({ name, setInfo, setPage }) {
               placeholder="10"
               {...register("maxDisputes", {
                 required: "Field required",
-                min: 1
+                min: 1,
               })}
             />
             <FormErrorMessage>{errors.maxDisputes?.message}</FormErrorMessage>

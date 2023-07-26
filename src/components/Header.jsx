@@ -20,8 +20,8 @@ import NotifPopover from "./ui/NotifPopover";
 import useSIWS from "@hooks/useSIWS";
 
 const Header = () => {
-  useSIWS()
-  
+  useSIWS(); // header is rendered on all pages, SIWS will be triggered anywhere header is rendered
+
   return (
     <Flex my={3} h={[16, 24]} align="center">
       <Link as={routerLink} to="/" style={{ textDecoration: "none" }}>

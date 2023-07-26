@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-function ProjectInfo({ setInfo, setPage }) {
+function ProjectInfo({ setFormData, setPage }) {
   const {
     register,
     handleSubmit,
@@ -18,8 +18,8 @@ function ProjectInfo({ setInfo, setPage }) {
   } = useForm();
 
   const onSubmit = (values) => {
-    setInfo((info) => {
-      return { ...info, ...values };
+    setFormData((data) => {
+      return { ...data, ...values };
     });
     setPage((currPage) => currPage + 1);
   };

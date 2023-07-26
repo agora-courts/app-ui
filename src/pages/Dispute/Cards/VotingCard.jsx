@@ -5,14 +5,7 @@ import castVote from "@services/castVote";
 import useProgram from "@hooks/useProgram";
 import { PublicKey } from "@solana/web3.js";
 
-export function VotingCard({
-  courtName,
-  disputeID,
-  repMint,
-  deadline,
-  cases,
-  loadDispute,
-}) {
+export function VotingCard({ txnParams, deadline, cases, loadDispute }) {
   const program = useProgram();
 
   const handleSubmit = (partyIdx) => {
@@ -21,9 +14,7 @@ export function VotingCard({
         let candidateAcc = cases[partyIdx].partyAddress;
         await castVote(
           {
-            courtName,
-            disputeID,
-            repMint: new PublicKey(repMint),
+            ...txnParams,
             candidateAcc: new PublicKey(candidateAcc),
           },
           program

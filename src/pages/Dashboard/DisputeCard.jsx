@@ -13,8 +13,8 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import getStatusColor from "@utils/getStatusColor";
 
-function DisputeCard({ title, court, status, timestamp, role, link }) {
-  let color = getStatusColor(status);
+function DisputeCard({ title, details, link }) {
+  let color = getStatusColor(details.status);
 
   return (
     <LinkBox>
@@ -31,7 +31,7 @@ function DisputeCard({ title, court, status, timestamp, role, link }) {
                 {title}
               </Text>
               <Text fontSize="sm" color="gray.400" align="left">
-                {court}
+                {details.courtName}
               </Text>
             </Box>
           </LinkOverlay>
@@ -40,7 +40,7 @@ function DisputeCard({ title, court, status, timestamp, role, link }) {
           <Flex gap={1.5} align="center" h="100%">
             <Circle w={3} h={3} background={color} />
             <Text fontSize={["sm", null, "md"]} fontWeight="semibold">
-              {status}
+              {details.status}
             </Text>
           </Flex>
         </GridItem>
@@ -49,12 +49,12 @@ function DisputeCard({ title, court, status, timestamp, role, link }) {
             <Box w="4" display={["none", null, "initial"]}>
               <ClockIcon />
             </Box>
-            <Text fontSize={["sm", null, "md"]}>{timestamp}</Text>
+            <Text fontSize={["sm", null, "md"]}>{details.timestamp}</Text>
           </Flex>
         </GridItem>
         <GridItem w="100%">
           <Text fontWeight="semibold" fontSize={["sm", null, "md"]} mt={2.5}>
-            {role} Member
+            {details.role} Member
           </Text>
         </GridItem>
       </Grid>

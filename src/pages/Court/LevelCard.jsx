@@ -30,7 +30,7 @@ const InfoPopover = ({ levels, ticker }) => {
         <PopoverArrow />
         <PopoverBody>
           <Stack divider={<StackDivider />} fontSize="xs">
-            {levels?.map((level, idx) => (
+            {levels.map((level, idx) => (
               <Flex key={level}>
                 <Text fontWeight="semibold">Level {idx + 1}</Text>
                 <Spacer />
@@ -47,15 +47,15 @@ const InfoPopover = ({ levels, ticker }) => {
 };
 
 export function LevelCard({ config }) {
-  const [numTokens, setNumTokens] = useState(0);
+  const [tokenBalance, setTokenBalance] = useState(0);
   const wallet = useAnchorWallet();
 
-  const ticker = config?.reputationToken?.ticker;
-  const levels = config?.levels;
-  const levelIdx = getLevel(numTokens, levels);
+  const ticker = config.reputationToken?.ticker;
+  const levels = config.levels || [];
+  const levelIdx = getLevel(tokenBalance, levels);
 
   useEffect(() => {
-    if (!config || !wallet) return;
+    if (!config.reputationToken || !wallet) return;
 
     let active = true;
     loadTokenBalance();
@@ -65,13 +65,13 @@ export function LevelCard({ config }) {
 
     async function loadTokenBalance() {
       const balance = await getTokenBalance(
-        config?.reputationToken?.mintAddress,
+        config.reputationToken.mintAddress,
         wallet.publicKey
       );
       if (!active) {
         return;
       }
-      setNumTokens(balance);
+      setTokenBalance(balance);
     }
   }, [config, wallet]);
 
@@ -91,12 +91,12 @@ export function LevelCard({ config }) {
         <InfoPopover levels={levels} ticker={ticker} />
       </Flex>
       <Text mt={5} fontSize="sm">
-        {numTokens} {ticker}
+        {tokenBalance} {ticker}
       </Text>
       <Progress
         value={
-          levelIdx < levels?.length - 1
-            ? ((numTokens - levels[levelIdx]) /
+          levelIdx < levels.length - 1
+            ? ((tokenBalance - levels[levelIdx]) /
                 (levels[levelIdx + 1] - levels[levelIdx])) *
               100
             : 100
@@ -110,9 +110,9 @@ export function LevelCard({ config }) {
           LEVEL {levelIdx + 1}
         </Text>
         <Spacer />
-        {levelIdx < levels?.length - 1 && (
+        {levelIdx < levels.length - 1 && (
           <>
-            {levels[levelIdx + 1] - numTokens} {ticker} to
+            {levels[levelIdx + 1] - tokenBalance} {ticker} to
             <Text color="green.500">&nbsp;Level {levelIdx + 2}</Text>
           </>
         )}

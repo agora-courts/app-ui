@@ -5,7 +5,7 @@ import useProgram from "@hooks/useProgram";
 import revealVote from "@services/revealVote";
 import getUser from "@services/getUser";
 
-export function RevealCard({ courtName, disputeID, voters }) {
+export function RevealCard({ txnParams, voters }) {
   const wallet = useAnchorWallet();
   const program = useProgram();
 
@@ -24,7 +24,7 @@ export function RevealCard({ courtName, disputeID, voters }) {
           (ele) => ele.id === disputeID
         ).hashedVote;
 
-        await revealVote({ courtName, disputeID, vote }, program);
+        await revealVote({ ...txnParams, vote }, program);
         toast.success("Vote finalized!");
       } catch (error) {
         console.log(error);

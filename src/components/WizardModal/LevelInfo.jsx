@@ -16,13 +16,13 @@ import { XMarkIcon, CheckIcon } from "@heroicons/react/24/outline";
 function LevelInfo({ levels, setLevels, ticker }) {
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
-  let prevAmount = levels[levels.length - 1];
+  let prevLevel = levels[levels.length - 1];
 
   const handleChange = (event) => {
     setInput(event.target.value);
 
     let isInvalid =
-      isNaN(event.target.value) || parseInt(event.target.value) <= prevAmount;
+      isNaN(event.target.value) || parseInt(event.target.value) <= prevLevel;
     setError(isInvalid);
   };
 
@@ -31,7 +31,7 @@ function LevelInfo({ levels, setLevels, ticker }) {
       Lastly, set the number of reputation tokens a voter needs to reach each
       level. Levels are used to determine voter eligibility in disputes.
       <SimpleGrid columns={2} gap={3} my={5}>
-        {prevAmount > -1 &&
+        {prevLevel > -1 &&
           levels.slice(1).map((level, idx) => (
             <Card size="sm" key={level}>
               <CardBody>
@@ -54,11 +54,11 @@ function LevelInfo({ levels, setLevels, ticker }) {
                 <Input
                   size="sm"
                   value={input}
-                  placeholder={prevAmount + 1}
+                  placeholder={prevLevel + 1}
                   onChange={handleChange}
                 />
                 <FormErrorMessage>
-                  {error && `Must be at least ${prevAmount + 1}`}
+                  {error && `Must be at least ${prevLevel + 1}`}
                 </FormErrorMessage>
               </FormControl>
               <Box

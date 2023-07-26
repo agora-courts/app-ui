@@ -50,7 +50,7 @@ const Home = () => {
             width={52}
             placeholder="Search for courts..."
           />
-          <WizardModal btnText="Create Court" loadCourt={loadCourt} />
+          <WizardModal buttonText="Create Court" loadCourt={loadCourt} />
         </Flex>
       </Flex>
 

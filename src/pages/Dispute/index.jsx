@@ -26,14 +26,16 @@ import { PublicKey } from "@solana/web3.js";
 import { BN } from "@coral-xyz/anchor";
 import { toast } from "react-toastify";
 import joinDispute from "@services/joinDispute";
+import getDisputeStatus from "@utils/getDisputeStatus";
 
 const Dispute = () => {
   let { state } = useLocation();
   let { name, disputeId } = useParams();
-  const [dispute, setDispute] = useState();
+  const [dispute, setDispute] = useState({});
   const program = useProgram();
 
-  let color = getStatusColor(dispute?.status);
+  let status = getDisputeStatus(dispute.timestamps, dispute.status);
+  let color = getStatusColor(status);
 
   function loadDispute() {
     let active = true;
@@ -46,9 +48,9 @@ const Dispute = () => {
       }
       setDispute({
         ...court.disputes[disputeId],
-        repToken: court.config.reputationToken.ticker,
-        repMint: court.config.reputationToken.mintAddress,
-        payToken: court.config.paymentToken.ticker,
+        reputationTicker: court.config.reputationToken.ticker,
+        reputationMint: court.config.reputationToken.mintAddress,
+        paymentTicker: court.config.paymentToken.ticker,
         payMint: court.config.paymentToken.mintAddress,
       });
     })();
@@ -61,41 +63,40 @@ const Dispute = () => {
   useEffect(() => {
     if (state) {
       setDispute(state);
-      return;
+    } else {
+      loadDispute();
     }
-
-    loadDispute();
   }, []);
 
   const CardDisplay = () => {
-    switch (dispute?.status) {
+    switch (status) {
       case "Inactive":
       case "Awaiting Evidence":
         return (
           <EvidenceCard
-            courtName={name}
-            disputeID={new BN(disputeId)}
-            cases={dispute?.cases}
+            txnParams={{ courtName: name, disputeID: new BN(disputeId) }}
+            cases={dispute.cases}
             loadDispute={loadDispute}
           />
         );
       case "Voting":
         return (
           <VotingCard
-            courtName={name}
-            disputeID={new BN(disputeId)}
-            repMint={dispute?.repMint}
-            cases={dispute?.cases}
-            deadline={getTimeUntilDate(dispute?.timestamps, dispute?.status)}
+            txnParams={{
+              courtName: name,
+              disputeID: new BN(disputeId),
+              repMint: new PublicKey(dispute.reputationMint),
+            }}
+            cases={dispute.cases}
+            deadline={getTimeUntilDate(dispute.timestamps, status)}
             loadDispute={loadDispute}
           />
         );
       case "Finalizing Votes":
         return (
           <RevealCard
-            courtName={name}
-            disputeID={new BN(disputeId)}
-            voters={dispute?.voters}
+            txnParams={{ courtName: name, disputeID: new BN(disputeId) }}
+            voters={dispute.voters}
           />
         );
     }
@@ -108,8 +109,8 @@ const Dispute = () => {
           {
             courtName: name,
             disputeID: new BN(disputeId),
-            repMint: new PublicKey(dispute?.repMint),
-            payMint: new PublicKey(dispute?.payMint),
+            repMint: new PublicKey(dispute.reputationMint),
+            payMint: new PublicKey(dispute.payMint),
           },
           program
         );
@@ -132,38 +133,37 @@ const Dispute = () => {
         pt={[10]}
       >
         <Flex align="center">
-          <Heading>{dispute?.title}</Heading>
+          <Heading>{dispute.title}</Heading>
           <Spacer />
-          {dispute?.status === "Inactive" && (
+          {status === "Inactive" && (
             <Button mr={5} onClick={handleClick} isDisabled={!program}>
               Join Dispute
             </Button>
           )}
           <Circle borderWidth={1} py={0.5} px={2} borderColor={color}>
-            <Text color={color}>{dispute?.status}</Text>
+            <Text color={color}>{status}</Text>
           </Circle>
         </Flex>
-        <Text my={5}>{dispute?.protocolDescription}</Text>
+        <Text my={5}>{dispute.protocolDescription}</Text>
         <Accordion defaultIndex={[0]} allowMultiple>
-          {dispute &&
-            dispute.cases.map((c, idx) => (
-              <AccordionItem key={idx}>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left" fontSize="xl">
-                      Party {idx + 1} Evidence
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Text py={2} fontWeight="semibold">
-                    Author: {c.partyAddress}
-                  </Text>
-                  {c.evidence}
-                </AccordionPanel>
-              </AccordionItem>
-            ))}
+          {dispute.cases?.map((c, idx) => (
+            <AccordionItem key={idx}>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left" fontSize="xl">
+                    Party {idx + 1} Evidence
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <Text py={2} fontWeight="semibold">
+                  Author: {c.partyAddress}
+                </Text>
+                {c.evidence}
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
         </Accordion>
       </Box>
 

@@ -19,16 +19,17 @@ import { toast } from "react-toastify";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import useProgram from "@hooks/useProgram";
 
-function Wizard({ btnText, name, isDisabled, loadCourt }) {
+function Wizard({ buttonText, courtName, isDisabled, loadCourt }) {
   const [page, setPage] = useState(0);
-  const [info, setInfo] = useState({});
-  const [levels, setLevels] = useState([-1]);
+  const [formData, setFormData] = useState({});
+  const [levels, setLevels] = useState([-1]); // sentinel value as lower bound for token amounts
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const wallet = useAnchorWallet();
   const program = useProgram();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const FormTitles = [
+  const isCourtExisting = !!courtName;
+  const formTitles = [
     "Welcome to Agora!",
     "Submit Project Details",
     "Configure Level System",
@@ -36,35 +37,42 @@ function Wizard({ btnText, name, isDisabled, loadCourt }) {
 
   const PageDisplay = () => {
     if (page === 0) {
-      return <CourtInfo name={name} setPage={setPage} setInfo={setInfo} />;
+      return (
+        <CourtInfo
+          name={courtName}
+          setPage={setPage}
+          setFormData={setFormData}
+        />
+      );
     } else if (page === 1) {
-      return <ProjectInfo setPage={setPage} setInfo={setInfo} />;
+      return <ProjectInfo setPage={setPage} setFormData={setFormData} />;
     } else {
       return (
         <LevelInfo
           levels={levels}
           setLevels={setLevels}
-          ticker={info.reputationTicker}
+          ticker={formData.reputationTicker}
         />
       );
     }
   };
 
   const handleSubmit = () => {
-    if (!name && levels.length == 1) {
+    if (!isCourtExisting && levels.length == 1) {
       toast.error("Must set at least one level!");
       return;
     }
 
-    let sliced = levels.slice(1);
+    let slicedLevels = levels.slice(1);
     (async function () {
       try {
-        if (name) await updateCourt(name, { ...info, levels: sliced });
+        if (isCourtExisting)
+          await updateCourt(courtName, { ...formData, levels: slicedLevels });
         else {
           await createCourt(
             {
-              ...info,
-              levels: sliced,
+              ...formData,
+              levels: slicedLevels,
               editAuthority: wallet.publicKey.toString(),
             },
             program
@@ -82,16 +90,16 @@ function Wizard({ btnText, name, isDisabled, loadCourt }) {
   return (
     <>
       <Button onClick={onOpen} isDisabled={!wallet || isDisabled} px={30}>
-        {btnText}
+        {buttonText}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize="2xl">{FormTitles[page]}</ModalHeader>
+          <ModalHeader fontSize="2xl">{formTitles[page]}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{PageDisplay()}</ModalBody>
-          {page === FormTitles.length - 1 && (
+          {page === formTitles.length - 1 && (
             <ModalFooter>
               <Button onClick={handleSubmit}>Submit</Button>
             </ModalFooter>

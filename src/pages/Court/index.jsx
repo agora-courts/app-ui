@@ -17,17 +17,17 @@ const Court = () => {
 
   useEffect(() => {
     let active = true;
-    load();
+    loadCourt();
     return () => {
       active = false;
     };
 
-    async function load() {
-      const res = await getCourt(name);
+    async function loadCourt() {
+      const court = await getCourt(name);
       if (!active) {
         return;
       }
-      setCourt(res);
+      setCourt(court);
     }
   }, []);
 
@@ -82,7 +82,7 @@ const Court = () => {
         <Tabs court={court} />
       </Box>
 
-      <LevelCard config={court.config} />
+      <LevelCard config={court.config || {}} />
     </Flex>
   );
 };

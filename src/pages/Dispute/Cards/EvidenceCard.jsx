@@ -16,7 +16,7 @@ import { useRef } from "react";
 import createCase from "@services/createCase";
 import useProgram from "@hooks/useProgram";
 
-export function EvidenceCard({ courtName, disputeID, cases, loadDispute }) {
+export function EvidenceCard({ txnParams, cases, loadDispute }) {
   const wallet = useAnchorWallet();
   const program = useProgram();
 
@@ -33,8 +33,7 @@ export function EvidenceCard({ courtName, disputeID, cases, loadDispute }) {
 
         await createCase(
           {
-            courtName,
-            disputeID,
+            ...txnParams,
             evidence: evidence.current.value,
           },
           program

@@ -16,6 +16,7 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 const Params = () => {
   let { state } = useLocation();
   const wallet = useAnchorWallet();
+  const config = state.config || {};
 
   return (
     <Card>
@@ -34,7 +35,7 @@ const Params = () => {
                       Reputation Token
                     </Heading>
                     <Text pt="2" fontSize="sm">
-                      {state.config?.reputationToken?.mintAddress}
+                      {config.reputationToken?.mintAddress}
                     </Text>
                   </Box>
                   <Box>
@@ -42,7 +43,7 @@ const Params = () => {
                       Payment Token
                     </Heading>
                     <Text pt="2" fontSize="sm">
-                      {state.config?.paymentToken?.mintAddress}
+                      {config.paymentToken?.mintAddress}
                     </Text>
                   </Box>
                   <Box>
@@ -50,7 +51,7 @@ const Params = () => {
                       Project Contract
                     </Heading>
                     <Text pt="2" fontSize="sm">
-                      {state.config?.projectAddress}
+                      {config.projectAddress}
                     </Text>
                   </Box>
                 </Stack>
@@ -68,14 +69,14 @@ const Params = () => {
                       Max Active Disputes
                     </Heading>
                     <Text pt="2" fontSize="sm">
-                      {state.config?.maxDisputes} disputes
+                      {config.maxDisputes} disputes
                     </Text>
                   </Box>
                   <WizardModal
-                    btnText="Edit Config"
-                    name={state.name}
+                    buttonText="Edit Config"
+                    courtName={state.name}
                     isDisabled={
-                      wallet?.publicKey.toString() !== state.config.editAuthority
+                      wallet?.publicKey.toString() !== config.editAuthority
                     }
                   />
                 </Stack>

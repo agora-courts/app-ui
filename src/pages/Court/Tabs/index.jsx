@@ -8,6 +8,8 @@ import { DisputeTab } from "./DisputeTab";
 import { AboutTab } from "./AboutTab";
 
 const Tabs = ({ court }) => {
+  let config = court.config || {};
+
   return (
     <CTabs>
       <TabList>
@@ -17,16 +19,18 @@ const Tabs = ({ court }) => {
 
       <TabPanels>
         <DisputeTab
-          disputes={court.disputes}
-          repToken={court.config?.reputationToken?.ticker}
-          repMint={court.config?.reputationToken?.mintAddress}
-          payToken={court.config?.paymentToken?.ticker}
+          disputes={court.disputes || []}
+          tokens={{
+            reputationTicker: config.reputationToken?.ticker,
+            reputationMint: config.reputationToken?.mintAddress,
+            paymentTicker: config.paymentToken?.ticker,
+          }}
           testConfig={{
             courtName: court.name,
-            payMint: court.config?.paymentToken?.mintAddress,
+            payMint: config.paymentToken?.mintAddress,
           }}
         />
-        <AboutTab config={court.config} />
+        <AboutTab config={config} />
       </TabPanels>
     </CTabs>
   );

@@ -14,13 +14,7 @@ import useProgram from "@hooks/useProgram";
 import { PublicKey } from "@solana/web3.js";
 import { toast } from "react-toastify";
 
-export function DisputeTab({
-  disputes,
-  repToken,
-  payToken,
-  repMint,
-  testConfig,
-}) {
+export function DisputeTab({ disputes, tokens, testConfig }) {
   const [query, setQuery] = useState();
   const [filterBy, setFilter] = useState();
   const [sort, setSort] = useState();
@@ -49,7 +43,7 @@ export function DisputeTab({
 
     return res;
   };
-  let filteredDisputes = filter(disputes) || [];
+  let filteredDisputes = filter(disputes);
 
   const handleClick = () => {
     (async function () {
@@ -57,7 +51,7 @@ export function DisputeTab({
         await createDispute(
           {
             courtName: testConfig.courtName,
-            repMint: new PublicKey(repMint),
+            repMint: new PublicKey(tokens.reputationMint),
             payMint: new PublicKey(testConfig.payMint),
           },
           program
@@ -94,7 +88,7 @@ export function DisputeTab({
           <option value="Level">Level Increasing</option>
         </Select>
       </HStack>
-      <Text my={4}>{filteredDisputes?.length} Disputes</Text>
+      <Text my={4}>{filteredDisputes.length} Disputes</Text>
       <Button mb={4} onClick={handleClick} isDisabled={!program}>
         Create Test Dispute
       </Button>
@@ -104,9 +98,9 @@ export function DisputeTab({
             key={idx}
             dispute={{
               ...dispute,
-              repToken,
-              payToken,
-              repMint,
+              reputationTicker: tokens.reputationTicker,
+              paymentTicker: tokens.paymentTicker,
+              reputationMint: tokens.reputationMint,
               payMint: testConfig.payMint,
             }}
             idx={idx}
