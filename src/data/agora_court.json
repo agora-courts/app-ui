@@ -510,7 +510,7 @@
       "accounts": [
         {
           "name": "case",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -593,10 +593,6 @@
         "kind": "struct",
         "fields": [
           {
-            "name": "votes",
-            "type": "u64"
-          },
-          {
             "name": "evidence",
             "type": "string"
           },
@@ -659,6 +655,12 @@
             }
           },
           {
+            "name": "votes",
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
             "name": "status",
             "type": {
               "defined": "DisputeStatus"
@@ -671,16 +673,6 @@
           {
             "name": "submittedCases",
             "type": "u8"
-          },
-          {
-            "name": "votes",
-            "type": "u64"
-          },
-          {
-            "name": "leader",
-            "type": {
-              "defined": "CaseLeader"
-            }
           },
           {
             "name": "config",
@@ -772,22 +764,6 @@
           },
           {
             "name": "protocolRep",
-            "type": "u64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "CaseLeader",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "user",
-            "type": "publicKey"
-          },
-          {
-            "name": "votes",
             "type": "u64"
           }
         ]

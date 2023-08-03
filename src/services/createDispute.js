@@ -27,6 +27,8 @@ const createDispute = async (config, program) => {
 
   let curTime = Math.floor(Date.now() / 1000);
 
+  console.log("Current Time: ", curTime);
+
   let disputeConfig = {
     graceEndsAt: new anchor.BN(curTime + 20 * 60), //20 min
     initCasesEndsAt: new anchor.BN(curTime + 40 * 60), //+20 min

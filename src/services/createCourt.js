@@ -16,8 +16,10 @@ const createCourt = async (court, program) => {
     config.reputationToken = token_metadata[0];
     config.paymentToken = token_metadata[1];
 
+    console.log("Creating court with ", config.maxDisputes, " votes!");
+
     await program.methods
-      .initializeCourt(name, config.maxVotes)
+      .initializeCourt(name, config.maxDisputes)
       .accounts({
         court: findProgramAddress("court", program.programId, name).publicKey,
         authority: program.provider.publicKey,
