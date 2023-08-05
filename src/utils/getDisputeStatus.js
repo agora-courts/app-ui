@@ -4,14 +4,14 @@ const getDisputeStatus = (timestamps, status) => {
 
   const statusAfterTimestamp = {
     "Awaiting Evidence": new Date(timestamps.inactiveEndTime),
-    Voting: new Date(timestamps.submissionEndTime),
+    "Voting": new Date(timestamps.submissionEndTime),
     "Finalizing Votes": new Date(timestamps.votingEndTime),
   };
   const dateNow = new Date();
 
   if (
     new Date(timestamps.finalEndTime) < dateNow ||
-    (status === "Inactive" && new Date(timestamps.inactiveEndTime) < dateNow)
+    (status === "Inactive" && new Date(timestamps.inactiveEndTime) < dateNow) // this isn't fully sufficient - if no one votes / reveals should also complete
   )
     return "Complete";
 
@@ -20,6 +20,27 @@ const getDisputeStatus = (timestamps, status) => {
     if (dateNow < val) break;
 
     flooredStatus = key;
+  }
+
+  switch (status) {
+    case "Inactive":
+      return flooredStatus;
+    case "Awaiting Evidence":
+      if (flooredStatus !== "Inactive") {
+        return flooredStatus;
+      } else {
+        return status;
+      }
+    case "Voting":
+      if (flooredStatus !== "Inactive" && flooredStatus !== "Awaiting Evidence") {
+        return flooredStatus;
+      } else {
+        return status;
+      }
+    case "Finalizing Votes":
+      return status;
+    case "Complete":
+      return status;
   }
 
   return flooredStatus;

@@ -18,10 +18,12 @@ const createCourt = async (court, program) => {
 
     console.log("Creating court with ", config.maxDisputes, " votes!");
 
+    let courtPDA = findProgramAddress("court", program.programId, name).publicKey;
+
     await program.methods
       .initializeCourt(name, config.maxDisputes)
       .accounts({
-        court: findProgramAddress("court", program.programId, name).publicKey,
+        court: courtPDA,
         authority: program.provider.publicKey,
         protocol: config.projectAddress,
         repMint: config.reputationToken.mintAddress,
@@ -30,9 +32,12 @@ const createCourt = async (court, program) => {
       })
       .rpc();
 
+    let publicKey = courtPDA.toString();
+
     await axios.post(ENDPOINTS.COURTS, {
       name,
       config,
+      publicKey,
     });
   } catch (err) {
     if (axios.isAxiosError(err)) throw new Error(err.response.data);
