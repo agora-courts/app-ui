@@ -18,10 +18,10 @@ export function RevealCard({ txnParams, voters }) {
       try {
         let user = await getUser();
         let juryDispute = user.juryDisputes.find(
-          (ele) => ele.court.name === courtName
+          (ele) => ele.court.name === txnParams.courtName
         );
         let vote = juryDispute.disputes.find(
-          (ele) => ele.id === disputeID
+          (ele) => ele.id === txnParams.disputeID
         ).hashedVote;
 
         await revealVote({ ...txnParams, vote }, program);
