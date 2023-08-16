@@ -20,11 +20,12 @@ export function RevealCard({ txnParams, voters }) {
         let juryDispute = user.juryDisputes.find(
           (ele) => ele.court.name === txnParams.courtName
         );
-        let vote = juryDispute.disputes.find(
-          (ele) => ele.id === txnParams.disputeID
-        ).hashedVote;
 
-        await revealVote({ ...txnParams, vote }, program);
+        let dispute = juryDispute.disputes.find((ele) => ele.id === txnParams.disputeID.toNumber().toString());
+        let vote = dispute.hashedVote;
+        let salt = dispute.salt;
+
+        await revealVote({ ...txnParams, vote, salt }, program);
         toast.success("Vote finalized!");
       } catch (error) {
         console.log(error);

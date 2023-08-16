@@ -1,4 +1,6 @@
+import axios from "axios";
 import createSalt from "../utils/createSalt";
+import { ENDPOINTS } from "@data/constants.js";
 import getATA from "../utils/getATA";
 import createRecordChecked from "../utils/createRecordChecked";
 import keccak from "keccak";
@@ -72,7 +74,20 @@ const castVote = async (config, program) => {
         .instruction()
     );
 
-    await program.provider.sendAndConfirm(tx);
+    await program.provider.sendAndConfirm(tx); //helius res first
+    let pubKey = program.provider.publicKey.toString();
+    let disputeId = disputeID.toNumber().toString();
+    let candidate = candidateAcc.toString();
+    setTimeout(async function(){
+      await axios.post(ENDPOINTS.USERS, {
+        pubKey,
+        salt,
+        disputeId,
+        courtName,
+        candidate
+      })
+    }, 25000);
+    console.log("Salt stored: ", salt);
   } catch (err) {
     throw err;
   }

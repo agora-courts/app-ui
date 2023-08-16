@@ -1,12 +1,15 @@
 import findProgramAddress from "../utils/findProgramAddress";
+import { ENDPOINTS } from "@data/constants.js";
+import axios from "axios";
+import { PublicKey } from "@solana/web3.js";
 
 const revealVote = async (config, program) => {
   // config -> courtName, disputeID: anchor.BN, candidateAcc: PublicKey, salt: string
   console.log(config);
   const courtName = config.courtName;
   const disputeID = config.disputeID;
-  const candidateAcc = config.candidateAcc;
-  const salt = config.salt;
+  const candidateAcc = new PublicKey(config.vote);
+  let salt = config.salt;
 
   const courtPDA = findProgramAddress(
     "court",

@@ -30,10 +30,10 @@ const createDispute = async (config, program) => {
   console.log("Current Time: ", curTime);
 
   let disputeConfig = {
-    graceEndsAt: new anchor.BN(curTime + 20 * 60), //20 min
-    initCasesEndsAt: new anchor.BN(curTime + 40 * 60), //+20 min
-    votingEndsAt: new anchor.BN(curTime + 60 * 60), //+20 min
-    disputeEndsAt: new anchor.BN(curTime + 80 * 60), //+20 min
+    graceEndsAt: new anchor.BN(curTime + 5 * 60), //10 min
+    initCasesEndsAt: new anchor.BN(curTime + 10 * 60), //+10 min
+    votingEndsAt: new anchor.BN(curTime + 15 * 60), //+10 min
+    disputeEndsAt: new anchor.BN(curTime + 20 * 60), //+10 min
     voterRepRequired: new anchor.BN(5),
     voterRepCost: new anchor.BN(2),
     repCost: new anchor.BN(10),
