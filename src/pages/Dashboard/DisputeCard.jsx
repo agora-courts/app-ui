@@ -12,9 +12,12 @@ import {
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import getStatusColor from "@utils/getStatusColor";
+import getDisputeStatus from "@utils/getDisputeStatus";
+import getTimeUntilDate from "@utils/getTimeUntilDate";
 
 function DisputeCard({ title, details, link }) {
-  let color = getStatusColor(details.status);
+  let status = getDisputeStatus(details.timestamps, details.status);
+  let color = getStatusColor(status);
 
   return (
     <LinkBox>
@@ -40,7 +43,7 @@ function DisputeCard({ title, details, link }) {
           <Flex gap={1.5} align="center" h="100%">
             <Circle w={3} h={3} background={color} />
             <Text fontSize={["sm", null, "md"]} fontWeight="semibold">
-              {details.status}
+              {status}
             </Text>
           </Flex>
         </GridItem>
@@ -49,7 +52,9 @@ function DisputeCard({ title, details, link }) {
             <Box w="4" display={["none", null, "initial"]}>
               <ClockIcon />
             </Box>
-            <Text fontSize={["sm", null, "md"]}>{details.timestamp}</Text>
+            <Text fontSize={["sm", null, "md"]}>
+              {getTimeUntilDate(details.timestamps, status)}
+            </Text>
           </Flex>
         </GridItem>
         <GridItem w="100%">

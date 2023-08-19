@@ -13,7 +13,7 @@ const getDisputeStatus = (timestamps, status) => {
     new Date(timestamps.finalEndTime) < dateNow ||
     (status === "Inactive" && new Date(timestamps.inactiveEndTime) < dateNow) // this isn't fully sufficient - if no one votes / reveals should also complete
   )
-    return "Complete";
+    return "Completed";
 
   let flooredStatus = "Inactive";
   for (let [key, val] of Object.entries(statusAfterTimestamp)) {
@@ -39,7 +39,7 @@ const getDisputeStatus = (timestamps, status) => {
       }
     case "Finalizing Votes":
       return status;
-    case "Complete":
+    case "Completed":
       return status;
   }
 

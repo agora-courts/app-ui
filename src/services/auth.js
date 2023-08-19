@@ -1,10 +1,10 @@
 import axios from "axios";
 import { ENDPOINTS } from "@data/constants.js";
 
-const login = async (message, signature) => {
+export const login = async (message, signature) => {
   try {
     await axios.post(
-      ENDPOINTS.AUTH,
+      `${ENDPOINTS.AUTH}/login`,
       {
         message,
         signature,
@@ -21,4 +21,15 @@ const login = async (message, signature) => {
   }
 };
 
-export default login;
+export const logout = async () => {
+  try {
+    await axios.get(`${ENDPOINTS.AUTH}/logout`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+  } catch (err) {
+    throw err;
+  }
+};

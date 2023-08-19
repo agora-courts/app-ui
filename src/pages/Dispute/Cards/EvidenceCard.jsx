@@ -38,7 +38,7 @@ export function EvidenceCard({ txnParams, cases, loadDispute }) {
           },
           program
         );
-        loadDispute();
+        setTimeout(loadDispute(), 2500);
         toast.success("Evidence submitted!");
       } catch (error) {
         console.log(error);

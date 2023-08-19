@@ -77,9 +77,13 @@ function ProjectInfo({ setFormData, setPage }) {
         </SimpleGrid>
 
         <ModalFooter gap={4}>
-          <Button type="submit">
-            Next
+          <Button
+            variant="outline"
+            onClick={() => setPage((currPage) => currPage - 1)}
+          >
+            Previous
           </Button>
+          <Button type="submit">Next</Button>
         </ModalFooter>
       </form>
     </>

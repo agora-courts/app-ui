@@ -101,6 +101,13 @@ function Wizard({ buttonText, courtName, isDisabled, loadCourt }) {
           <ModalBody>{PageDisplay()}</ModalBody>
           {page === formTitles.length - 1 && (
             <ModalFooter>
+              <Button
+                variant="outline"
+                onClick={() => setPage((currPage) => currPage - 1)}
+                mr={4}
+              >
+                Previous
+              </Button>
               <Button onClick={handleSubmit}>Submit</Button>
             </ModalFooter>
           )}

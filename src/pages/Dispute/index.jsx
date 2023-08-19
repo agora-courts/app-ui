@@ -97,6 +97,7 @@ const Dispute = () => {
           <RevealCard
             txnParams={{ courtName: name, disputeID: new BN(disputeId) }}
             voters={dispute.voters}
+            deadline={getTimeUntilDate(dispute.timestamps, status)}
           />
         );
     }
@@ -114,7 +115,7 @@ const Dispute = () => {
           },
           program
         );
-        loadDispute();
+        setTimeout(loadDispute(), 2500);
         toast.success("Dispute joined!");
       } catch (error) {
         console.log(error);

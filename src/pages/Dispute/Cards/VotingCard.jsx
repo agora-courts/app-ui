@@ -19,7 +19,7 @@ export function VotingCard({ txnParams, deadline, cases, loadDispute }) {
           },
           program
         );
-        loadDispute();
+        setTimeout(loadDispute(), 2500);
         toast.success("Vote submitted!");
       } catch (error) {
         console.log(error);

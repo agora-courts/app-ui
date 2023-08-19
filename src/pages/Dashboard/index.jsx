@@ -7,7 +7,6 @@ import getUser from "@services/getUser";
 import getAsset from "@services/getAsset";
 import { DEFAULT_IMG } from "@data/constants.js";
 import { toast } from "react-toastify";
-import getTimeUntilDate from "@utils/getTimeUntilDate";
 import claimDisputes from "@services/claimDisputes";
 
 function Dashboard() {
@@ -29,17 +28,17 @@ function Dashboard() {
         user.tokenBalances.forEach((token, idx, arr) => {
           arr[idx] = { ...token_metadata[idx], amount: token.amount };
         });
+
+        if (!active) {
+          return;
+        }
+        setUser(user);
       } catch (e) {
         console.log(e);
         if (e.response.data === "Not Authorized") {
           setUnauthorized(true);
         }
       }
-
-      if (!active) {
-        return;
-      }
-      setUser(user);
     })();
 
     return () => {
@@ -51,7 +50,7 @@ function Dashboard() {
     if (!program) return;
 
     loadUser();
-  }, [program]);
+  }, []);
 
   const handleSubmit = () => {
     (async function () {
@@ -97,10 +96,7 @@ function Dashboard() {
                 details={{
                   courtName: ele.court.name,
                   status: dispute.status,
-                  timestamp: getTimeUntilDate(
-                    dispute.timestamps,
-                    dispute.status
-                  ),
+                  timestamps: dispute.timestamps,
                   role: "Party",
                 }}
                 link={`/courts/${ele.court.name}/dispute/${idx}`}
@@ -119,10 +115,7 @@ function Dashboard() {
                 details={{
                   courtName: ele.court.name,
                   status: dispute.status,
-                  timestamp: getTimeUntilDate(
-                    dispute.timestamps,
-                    dispute.status
-                  ),
+                  timestamps: dispute.timestamps,
                   role: "Jury",
                 }}
                 link={`/courts/${ele.court.name}/dispute/${idx}`}
