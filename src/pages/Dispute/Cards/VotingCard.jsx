@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import castVote from "@services/castVote";
 import useProgram from "@hooks/useProgram";
 import { PublicKey } from "@solana/web3.js";
+import getError from "@utils/getError";
 
 export function VotingCard({ txnParams, deadline, cases, loadDispute }) {
   const program = useProgram();
@@ -22,8 +23,7 @@ export function VotingCard({ txnParams, deadline, cases, loadDispute }) {
         setTimeout(loadDispute(), 2500);
         toast.success("Vote submitted!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };

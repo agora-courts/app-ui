@@ -18,6 +18,7 @@ import updateCourt from "@services/updateCourt";
 import { toast } from "react-toastify";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import useProgram from "@hooks/useProgram";
+import getError from "@utils/getError";
 
 function Wizard({ buttonText, courtName, isDisabled, loadCourt }) {
   const [page, setPage] = useState(0);
@@ -81,8 +82,7 @@ function Wizard({ buttonText, courtName, isDisabled, loadCourt }) {
         }
         toast.success("Court created!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };

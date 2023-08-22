@@ -34,7 +34,6 @@ const castVote = async (config, program) => {
   let userRepAcc = await program.provider.connection.getAccountInfo(userRepATA);
 
   let salt = createSalt();
-  console.log("SALT:", salt);
   let buf = Buffer.concat([
     candidateAcc.toBuffer(),
     Buffer.from(salt, "utf-8"),
@@ -87,7 +86,6 @@ const castVote = async (config, program) => {
         candidate
       })
     }, 25000);
-    console.log("Salt stored: ", salt);
   } catch (err) {
     throw err;
   }

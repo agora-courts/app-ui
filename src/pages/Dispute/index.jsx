@@ -27,6 +27,7 @@ import { BN } from "@coral-xyz/anchor";
 import { toast } from "react-toastify";
 import joinDispute from "@services/joinDispute";
 import getDisputeStatus from "@utils/getDisputeStatus";
+import getError from "@utils/getError";
 
 const Dispute = () => {
   let { state } = useLocation();
@@ -118,8 +119,7 @@ const Dispute = () => {
         setTimeout(loadDispute(), 2500);
         toast.success("Dispute joined!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };

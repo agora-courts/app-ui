@@ -6,6 +6,7 @@ import useProgram from "@hooks/useProgram";
 import revealVote from "@services/revealVote";
 import getUser from "@services/getUser";
 import getCourt from "../../../services/getCourt";
+import getError from "@utils/getError";
 
 export function RevealCard({ txnParams, voters, deadline }) {
   const wallet = useAnchorWallet();
@@ -25,8 +26,6 @@ export function RevealCard({ txnParams, voters, deadline }) {
 
         let court = await getCourt(txnParams.courtName);
         let disputeAcc = court.disputes[txnParams.disputeID.toNumber()];
-        console.log("id: ", txnParams.disputeID.toNumber());
-        console.log("court: ", disputeAcc);
 
         let dispute = juryDispute.disputes.find((ele) => ele.id === disputeAcc._id.toString());
         let vote = dispute.hashedVote;
@@ -35,8 +34,7 @@ export function RevealCard({ txnParams, voters, deadline }) {
         await revealVote({ ...txnParams, vote, salt }, program);
         toast.success("Vote finalized!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };

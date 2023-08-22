@@ -107,7 +107,10 @@ function CourtInfo({ name, setFormData, setPage }) {
               placeholder="10"
               {...register("maxDisputes", {
                 required: "Field required",
-                min: 1,
+                min: {
+                  value: 1,
+                  message: "Must be at least 1",
+                },
               })}
             />
             <FormErrorMessage>{errors.maxDisputes?.message}</FormErrorMessage>

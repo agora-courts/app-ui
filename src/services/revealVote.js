@@ -4,8 +4,6 @@ import axios from "axios";
 import { PublicKey } from "@solana/web3.js";
 
 const revealVote = async (config, program) => {
-  // config -> courtName, disputeID: anchor.BN, candidateAcc: PublicKey, salt: string
-  console.log(config);
   const courtName = config.courtName;
   const disputeID = config.disputeID;
   const candidateAcc = new PublicKey(config.vote);
@@ -42,7 +40,6 @@ const revealVote = async (config, program) => {
       })
       .rpc();
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };

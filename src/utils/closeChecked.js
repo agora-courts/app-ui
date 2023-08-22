@@ -20,7 +20,6 @@ const closeDisputeChecked = async (tx, courtName, disputeID, program) => {
           )
     }
   } catch(e) {
-    console.log(e);
     throw e;
   }
 

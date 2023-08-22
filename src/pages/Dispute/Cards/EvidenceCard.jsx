@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { useRef } from "react";
 import createCase from "@services/createCase";
 import useProgram from "@hooks/useProgram";
+import getError from "@utils/getError";
 
 export function EvidenceCard({ txnParams, cases, loadDispute }) {
   const wallet = useAnchorWallet();
@@ -41,8 +42,7 @@ export function EvidenceCard({ txnParams, cases, loadDispute }) {
         setTimeout(loadDispute(), 2500);
         toast.success("Evidence submitted!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };

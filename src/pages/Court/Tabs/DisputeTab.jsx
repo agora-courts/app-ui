@@ -13,11 +13,12 @@ import createDispute from "@services/createDispute";
 import useProgram from "@hooks/useProgram";
 import { PublicKey } from "@solana/web3.js";
 import { toast } from "react-toastify";
+import getError from "@utils/getError";
 
 export function DisputeTab({ disputes, tokens, testConfig }) {
   const [query, setQuery] = useState();
   const [filterBy, setFilter] = useState();
-  const [sort, setSort] = useState();
+  const [sort, setSort] = useState("Default");
   const program = useProgram();
 
   const filter = (disputes) => {
@@ -34,8 +35,8 @@ export function DisputeTab({ disputes, tokens, testConfig }) {
     }
 
     if (sort) {
-      if (sort === "Oldest") {
-        res = res.slice().reverse();
+      if (sort === "Default") {
+        res = res.toReversed();
       } else if (sort === "Level") {
         res = res.slice().sort((a, b) => a.levelRequired - b.levelRequired);
       }
@@ -58,8 +59,7 @@ export function DisputeTab({ disputes, tokens, testConfig }) {
         );
         toast.success("Test dispute created!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };

@@ -13,7 +13,6 @@ const getAsset = async (mintAccounts) => {
       logo: token.offChainMetadata.metadata?.image || "",
     }));
   } catch (e) {
-    console.log(e);
     throw new Error("Invalid token mint address");
   }
 };

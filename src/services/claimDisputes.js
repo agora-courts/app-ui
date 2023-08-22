@@ -13,7 +13,6 @@ const claimDisputes = async (config, program) => {
   const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
 
   let courtState = await program.account.court.fetch(courtPDA);
-  console.log("courtstate: ", courtState);
   const repMint = courtState.repMint;
   const payMint = courtState.payMint;
 

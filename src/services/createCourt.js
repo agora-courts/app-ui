@@ -3,11 +3,19 @@ import { ENDPOINTS } from "@data/constants.js";
 import getAsset from "./getAsset";
 import findProgramAddress from "../utils/findProgramAddress";
 import { SystemProgram } from "@solana/web3.js";
+import getCourt from "./getCourt";
 
 const createCourt = async (court, program) => {
   let { name, ...config } = court;
 
   try {
+    let nameExists = false;
+    try {
+      await getCourt(name);
+      nameExists = true;
+    } catch (e) {}
+    if (nameExists) throw new Error("Court name already exists");
+
     let token_metadata = await getAsset([
       config.reputationToken,
       config.paymentToken,
@@ -16,9 +24,11 @@ const createCourt = async (court, program) => {
     config.reputationToken = token_metadata[0];
     config.paymentToken = token_metadata[1];
 
-    console.log("Creating court with ", config.maxDisputes, " votes!");
-
-    let courtPDA = findProgramAddress("court", program.programId, name).publicKey;
+    let courtPDA = findProgramAddress(
+      "court",
+      program.programId,
+      name
+    ).publicKey;
 
     await program.methods
       .initializeCourt(name, config.maxDisputes)

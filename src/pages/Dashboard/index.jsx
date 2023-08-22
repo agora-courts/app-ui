@@ -8,6 +8,7 @@ import getAsset from "@services/getAsset";
 import { DEFAULT_IMG } from "@data/constants.js";
 import { toast } from "react-toastify";
 import claimDisputes from "@services/claimDisputes";
+import getError from "@utils/getError";
 
 function Dashboard() {
   const [user, setUser] = useState({});
@@ -34,7 +35,6 @@ function Dashboard() {
         }
         setUser(user);
       } catch (e) {
-        console.log(e);
         if (e.response.data === "Not Authorized") {
           setUnauthorized(true);
         }
@@ -61,8 +61,7 @@ function Dashboard() {
         loadUser();
         toast.success("Balances claimed!");
       } catch (error) {
-        console.log(error);
-        toast.error(error.message);
+        toast.error(getError(error.message));
       }
     })();
   };
@@ -90,7 +89,7 @@ function Dashboard() {
       {user.partyDisputes?.map((ele) =>
         ele.court.disputes?.reduce((res, dispute, idx) => {
           if (ele.disputeIDs.includes(dispute._id)) {
-            res.push(
+            res.unshift(
               <DisputeCard
                 title={dispute.title}
                 details={{
@@ -109,7 +108,7 @@ function Dashboard() {
       {user.juryDisputes?.map((ele) =>
         ele.court.disputes?.reduce((res, dispute, idx) => {
           if (ele.disputes.map((d) => d.id).includes(dispute._id)) {
-            res.push(
+            res.unshift(
               <DisputeCard
                 title={dispute.title}
                 details={{
