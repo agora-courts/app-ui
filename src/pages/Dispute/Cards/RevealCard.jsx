@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import useProgram from "@hooks/useProgram";
 import revealVote from "@services/revealVote";
 import getUser from "@services/getUser";
+import getCourt from "../../../services/getCourt";
 
 export function RevealCard({ txnParams, voters, deadline }) {
   const wallet = useAnchorWallet();
@@ -22,7 +23,12 @@ export function RevealCard({ txnParams, voters, deadline }) {
           (ele) => ele.court.name === txnParams.courtName
         );
 
-        let dispute = juryDispute.disputes.find((ele) => ele.id === txnParams.disputeID.toNumber().toString());
+        let court = await getCourt(txnParams.courtName);
+        let disputeAcc = court.disputes[txnParams.disputeID.toNumber()];
+        console.log("id: ", txnParams.disputeID.toNumber());
+        console.log("court: ", disputeAcc);
+
+        let dispute = juryDispute.disputes.find((ele) => ele.id === disputeAcc._id.toString());
         let vote = dispute.hashedVote;
         let salt = dispute.salt;
 

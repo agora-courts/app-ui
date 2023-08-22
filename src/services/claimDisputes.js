@@ -12,7 +12,8 @@ const claimDisputes = async (config, program) => {
 
   const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
 
-  let courtState = program.account.court.fetch(courtPDA);
+  let courtState = await program.account.court.fetch(courtPDA);
+  console.log("courtstate: ", courtState);
   const repMint = courtState.repMint;
   const payMint = courtState.payMint;
 
@@ -31,8 +32,8 @@ const claimDisputes = async (config, program) => {
   try {
     let curTime = Math.floor(Date.now() / 1000);
 
-    for (let i = queue.length; i >= 0; i--) {
-      if (queue[i].disputeEndTime < curTime) {
+    for (let i = queue.length - 1; i >= 0; i--) {
+      if (queue[i].disputeEndTime.toNumber() < curTime) {
         let disputeID = queue[i].disputeId;
 
         let disputePDA = findProgramAddress("dispute", program.programId, [
@@ -70,7 +71,9 @@ const claimDisputes = async (config, program) => {
       }
     }
 
-    await program.provider.sendAndConfirm(tx);
+    if (tx.instructions.length > 0) {
+      await program.provider.sendAndConfirm(tx);
+    }
   } catch (err) {
     throw err;
   }

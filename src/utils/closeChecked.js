@@ -2,7 +2,7 @@ import findProgramAddress from "./findProgramAddress";
 import { SystemProgram, Transaction } from "@solana/web3.js";
 
 const closeDisputeChecked = async (tx, courtName, disputeID, program) => {
-  const courtPDA = findProgramAddress("court", program.programId, courtName);
+  const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
   const disputePDA = findProgramAddress("dispute", program.programId, [courtPDA, disputeID]).publicKey;
 
   try {
