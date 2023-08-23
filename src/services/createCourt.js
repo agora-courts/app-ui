@@ -9,12 +9,16 @@ const createCourt = async (court, program) => {
   let { name, ...config } = court;
 
   try {
-    let nameExists = false;
-    try {
-      await getCourt(name);
-      nameExists = true;
-    } catch (e) {}
-    if (nameExists) throw new Error("Court name already exists");
+    // let nameExists = false;
+    // try {
+    //   await getCourt(name);
+    //   nameExists = true;
+    // } catch (e) {}
+    // if (nameExists) throw new Error("Court name already exists");
+    let c = await getCourt(name);
+    if (typeof c === 'object' && c !== null) {
+      throw new Error("Court name already exists");
+    }
 
     let token_metadata = await getAsset([
       config.reputationToken,
