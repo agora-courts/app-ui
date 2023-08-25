@@ -11,10 +11,9 @@ import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import relativeTime from "@utils/relativeTime";
 import getStatusColor from "@utils/getStatusColor";
-import getDisputeStatus from "@utils/getDisputeStatus";
 
 const DisputeCard = ({ dispute, idx }) => {
-  let status = getDisputeStatus(dispute.timestamps, dispute.status)
+  let status = dispute.status;
   let color = getStatusColor(status);
 
   return (

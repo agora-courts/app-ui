@@ -93,9 +93,9 @@ export function DisputeTab({ disputes, tokens, testConfig }) {
         Create Test Dispute
       </Button>
       <VStack>
-        {filteredDisputes.map((dispute, idx) => (
+        {filteredDisputes.map(dispute => (
           <DisputeCard
-            key={idx}
+            key={dispute.idx}
             dispute={{
               ...dispute,
               reputationTicker: tokens.reputationTicker,
@@ -103,7 +103,7 @@ export function DisputeTab({ disputes, tokens, testConfig }) {
               reputationMint: tokens.reputationMint,
               payMint: testConfig.payMint,
             }}
-            idx={idx}
+            idx={dispute.idx}
           ></DisputeCard>
         ))}
       </VStack>

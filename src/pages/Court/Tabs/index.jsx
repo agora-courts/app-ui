@@ -6,6 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { DisputeTab } from "./DisputeTab";
 import { AboutTab } from "./AboutTab";
+import getDisputeStatus from "@utils/getDisputeStatus";
 
 const Tabs = ({ court }) => {
   let config = court.config || {};
@@ -19,7 +20,15 @@ const Tabs = ({ court }) => {
 
       <TabPanels>
         <DisputeTab
-          disputes={court.disputes || []}
+          disputes={
+            court.disputes?.map((dispute, idx) => {
+              return {
+                ...dispute,
+                idx,
+                status: getDisputeStatus(dispute.timestamps, dispute.status),
+              };
+            }) || []
+          }
           tokens={{
             reputationTicker: config.reputationToken?.ticker,
             reputationMint: config.reputationToken?.mintAddress,

@@ -16,6 +16,7 @@ import { VotingCard } from "./Cards/VotingCard";
 import { DetailsCard } from "./Cards/DetailsCard";
 import { EvidenceCard } from "./Cards/EvidenceCard";
 import { RevealCard } from "./Cards/RevealCard";
+import { ResultsCard } from "./Cards/ResultsCard";
 import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import getTimeUntilDate from "@utils/getTimeUntilDate";
@@ -100,6 +101,13 @@ const Dispute = () => {
             voters={dispute.voters}
             deadline={getTimeUntilDate(dispute.timestamps, status)}
           />
+        );
+      case "Completed":
+        return (
+          <ResultsCard
+            totalVotes={dispute.totalVotes}
+            cases={dispute.cases}
+          ></ResultsCard>
         );
     }
   };

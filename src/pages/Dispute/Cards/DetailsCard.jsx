@@ -37,8 +37,8 @@ export function DetailsCard({ dispute }) {
             Total Rewards
           </Text>
           <Text>
-            {payTokenRewards} {dispute.payToken} / {repTokenRewards}{" "}
-            {dispute.repToken}
+            {payTokenRewards} {dispute.paymentTicker} / {repTokenRewards}{" "}
+            {dispute.reputationTicker}
           </Text>
         </Box>
         <Box>
@@ -46,7 +46,7 @@ export function DetailsCard({ dispute }) {
             Voter Deposit
           </Text>
           <Text>
-            {dispute.voterDeposit} {dispute.repToken}
+            {dispute.voterDeposit} {dispute.reputationTicker}
           </Text>
         </Box>
         <Box>
@@ -54,8 +54,8 @@ export function DetailsCard({ dispute }) {
             Party Deposit
           </Text>
           <Text>
-            {dispute.partyDeposit?.paymentTokens} {dispute.payToken} /{" "}
-            {dispute.partyDeposit?.reputationTokens} {dispute.repToken}
+            {dispute.partyDeposit?.paymentTokens} {dispute.paymentTicker} /{" "}
+            {dispute.partyDeposit?.reputationTokens} {dispute.reputationTicker}
           </Text>
         </Box>
         <Box>

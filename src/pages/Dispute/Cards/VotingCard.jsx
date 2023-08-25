@@ -43,19 +43,18 @@ export function VotingCard({ txnParams, deadline, cases, loadDispute }) {
           {deadline}
         </Center>
       </Flex>
-      {cases &&
-        cases.map((c, idx) => (
-          <Button
-            key={idx}
-            onClick={() => handleSubmit(idx)}
-            variant="outline"
-            w="full"
-            my={2}
-            isDisabled={!program}
-          >
-            Party {idx + 1}
-          </Button>
-        ))}
+      {cases?.map((_, idx) => (
+        <Button
+          key={idx}
+          onClick={() => handleSubmit(idx)}
+          variant="outline"
+          w="full"
+          my={2}
+          isDisabled={!program}
+        >
+          Party {idx + 1}
+        </Button>
+      ))}
     </Box>
   );
 }

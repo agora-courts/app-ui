@@ -9,7 +9,9 @@ const getAsset = async (mintAccounts) => {
 
     return data.map((token) => ({
       mintAddress: token.account,
-      ticker: token.onChainMetadata.metadata?.data?.symbol || "N/A",
+      ticker:
+        token.onChainMetadata.metadata?.data?.symbol ||
+        token.account.slice(0, 4) + ".." + token.account.slice(-4),
       logo: token.offChainMetadata.metadata?.image || "",
     }));
   } catch (e) {

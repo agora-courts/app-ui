@@ -82,7 +82,7 @@ function Dashboard() {
           <TokenCard
             logo={token.logo || DEFAULT_IMG}
             ticker={token.ticker}
-            balance={token.amount}
+            balance="--"
           />
         ))}
       </Flex>

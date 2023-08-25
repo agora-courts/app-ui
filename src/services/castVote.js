@@ -19,7 +19,11 @@ const castVote = async (config, program) => {
   const repMint = config.repMint;
   const candidateAcc = config.candidateAcc;
 
-  const courtPDA = findProgramAddress("court", program.programId, courtName).publicKey;
+  const courtPDA = findProgramAddress(
+    "court",
+    program.programId,
+    courtName
+  ).publicKey;
   const recordPDA = findProgramAddress("record", program.programId, [
     courtPDA,
     program.provider.publicKey,
@@ -74,17 +78,24 @@ const castVote = async (config, program) => {
     );
 
     await program.provider.sendAndConfirm(tx); //helius res first
-    let pubKey = program.provider.publicKey.toString();
     let disputeId = disputeID.toNumber().toString();
     let candidate = candidateAcc.toString();
-    setTimeout(async function(){
-      await axios.post(ENDPOINTS.USERS, {
-        pubKey,
-        salt,
-        disputeId,
-        courtName,
-        candidate
-      })
+    setTimeout(async function () {
+      await axios.post(
+        ENDPOINTS.USERS,
+        {
+          salt,
+          disputeId,
+          courtName,
+          candidate,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
     }, 25000);
   } catch (err) {
     throw err;

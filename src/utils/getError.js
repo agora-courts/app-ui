@@ -8,13 +8,19 @@ const getError = (errorMessage) => {
     // raw error
     let hexCode = errorMessage.split("0x")[1];
     let binaryCode = parseInt(hexCode, 16);
-    for (let error of idl.errors) {
-      if (error.code === binaryCode) {
-        return error.msg;
+    if (binaryCode > 6000) {
+      for (let error of idl.errors) {
+        if (error.code === binaryCode) {
+          return error.msg;
+        }
+      }
+    } else {
+      if (binaryCode === 0) {
+        return "This action can only be performed once";
       }
     }
   }
-  
+
   // unknown error
   return errorMessage;
 };

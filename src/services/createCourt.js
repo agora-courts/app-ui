@@ -9,14 +9,7 @@ const createCourt = async (court, program) => {
   let { name, ...config } = court;
 
   try {
-    // let nameExists = false;
-    // try {
-    //   await getCourt(name);
-    //   nameExists = true;
-    // } catch (e) {}
-    // if (nameExists) throw new Error("Court name already exists");
-    let c = await getCourt(name);
-    if (typeof c === 'object' && c !== null) {
+    if (await getCourt(name) !== "Not found") {
       throw new Error("Court name already exists");
     }
 
